@@ -39,6 +39,13 @@ header .container {
     display: flex;
     align-items: center;
     gap: 10px;
+    flex: 1;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .logo img {
