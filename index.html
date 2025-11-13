@@ -15,35 +15,28 @@
                 <h1>ALEEZA BEAUTY MAKEOVER STUDIO</h1>
             </div>
             <nav>
-                <div class="hamburger" id="hamburger">
+                <button class="hamburger" id="hamburger" aria-controls="side-drawer" aria-expanded="false" aria-label="Open navigation menu">
                     <span></span>
                     <span></span>
                     <span></span>
-                </div>
-                <ul id="nav-menu">
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#about">About Us</a></li>
-                    <li><a href="#services">Services</a></li>
-                    <li><a href="#gallery">Gallery</a></li>
-                    <li><a href="#testimonials">Testimonials</a></li>
-                    <li><a href="#contact">Book Now</a></li>
-                </ul>
+                </button>
             </nav>
 
             <!-- Side Drawer Menu -->
-            <div class="side-drawer" id="side-drawer">
+            <nav class="side-drawer" id="side-drawer" role="navigation" aria-label="Main Navigation" aria-hidden="true">
+                <div class="drawer-backdrop" id="drawer-backdrop"></div>
                 <div class="drawer-content">
-                    <button class="close-btn" id="close-drawer">&times;</button>
+                    <button class="close-btn" id="close-drawer" aria-label="Close navigation menu">&times;</button>
                     <ul class="drawer-menu">
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#about">About Us</a></li>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="#gallery">Gallery</a></li>
-                        <li><a href="#testimonials">Testimonials</a></li>
-                        <li><a href="#contact">Book Now</a></li>
+                        <li><a href="#home" tabindex="-1">Home</a></li>
+                        <li><a href="#about" tabindex="-1">About Us</a></li>
+                        <li><a href="#services" tabindex="-1">Services</a></li>
+                        <li><a href="#gallery" tabindex="-1">Gallery</a></li>
+                        <li><a href="#testimonials" tabindex="-1">Testimonials</a></li>
+                        <li><a href="#contact" tabindex="-1">Book Now</a></li>
                     </ul>
                 </div>
-            </div>
+            </nav>
         </div>
     </header>
 

@@ -1,31 +1,87 @@
-// Side Drawer Toggle
+// Side Drawer Toggle with Accessibility
 const hamburger = document.getElementById('hamburger');
 const sideDrawer = document.getElementById('side-drawer');
 const drawerCloseBtn = document.getElementById('close-drawer');
+const drawerBackdrop = document.getElementById('drawer-backdrop');
+const drawerLinks = sideDrawer.querySelectorAll('a');
+const firstLink = drawerLinks[0];
+const lastLink = drawerLinks[drawerLinks.length - 1];
 
-hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('open');
-    sideDrawer.classList.toggle('open');
-});
+let lastFocusedElement = null;
 
-drawerCloseBtn.addEventListener('click', () => {
+function openDrawer() {
+    hamburger.setAttribute('aria-expanded', 'true');
+    sideDrawer.setAttribute('aria-hidden', 'false');
+    hamburger.classList.add('open');
+
+    // Store the currently focused element
+    lastFocusedElement = document.activeElement;
+
+    // Move focus to first link
+    setTimeout(() => {
+        firstLink.focus();
+        firstLink.removeAttribute('tabindex');
+    }, 100);
+}
+
+function closeDrawer() {
+    hamburger.setAttribute('aria-expanded', 'false');
+    sideDrawer.setAttribute('aria-hidden', 'true');
     hamburger.classList.remove('open');
-    sideDrawer.classList.remove('open');
-});
+
+    // Return focus to hamburger
+    if (lastFocusedElement) {
+        lastFocusedElement.focus();
+    }
+}
+
+hamburger.addEventListener('click', openDrawer);
+
+drawerCloseBtn.addEventListener('click', closeDrawer);
 
 // Close drawer when clicking a link
-sideDrawer.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-        hamburger.classList.remove('open');
-        sideDrawer.classList.remove('open');
+drawerLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = link.getAttribute('href');
+        const targetSection = document.querySelector(targetId);
+
+        if (targetSection) {
+            targetSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        closeDrawer();
     });
 });
 
-// Close drawer when clicking overlay
-sideDrawer.addEventListener('click', (e) => {
-    if (e.target === sideDrawer) {
-        hamburger.classList.remove('open');
-        sideDrawer.classList.remove('open');
+// Close drawer when clicking backdrop
+drawerBackdrop.addEventListener('click', closeDrawer);
+
+// Close drawer on Escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && sideDrawer.getAttribute('aria-hidden') === 'false') {
+        closeDrawer();
+    }
+});
+
+// Focus trap inside drawer
+sideDrawer.addEventListener('keydown', (e) => {
+    if (sideDrawer.getAttribute('aria-hidden') === 'false') {
+        if (e.key === 'Tab') {
+            if (e.shiftKey) {
+                // Shift + Tab
+                if (document.activeElement === firstLink) {
+                    e.preventDefault();
+                    drawerCloseBtn.focus();
+                }
+            } else {
+                // Tab
+                if (document.activeElement === drawerCloseBtn) {
+                    e.preventDefault();
+                    firstLink.focus();
+                }
+            }
+        }
     }
 });
 
