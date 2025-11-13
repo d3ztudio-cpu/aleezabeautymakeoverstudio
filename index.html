@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ALEEZA BEAUTY MAKEOVER STUDIO</title>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -16,9 +17,11 @@
             <nav>
                 <ul>
                     <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About Us</a></li>
                     <li><a href="#services">Services</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                    <li><a href="#contact">Book Now</a></li>
                 </ul>
             </nav>
         </div>
@@ -26,9 +29,20 @@
 
     <section id="home" class="hero">
         <div class="container">
-            <h2>Welcome to ALEEZA BEAUTY MAKEOVER STUDIO</h2>
-            <p>Your destination for beauty and relaxation</p>
-            <a href="#contact" class="btn">Book Appointment</a>
+            <h2>Redefine Your Beauty with Aleeza</h2>
+            <p>Experience luxury beauty services tailored to enhance your natural glow</p>
+            <div class="hero-buttons">
+                <a href="#contact" class="btn primary">Book Appointment</a>
+                <a href="#services" class="btn secondary">View Services</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <div class="container">
+            <h2>About Us</h2>
+            <p>Welcome to Aleeza Beauty Makeover Studio, where elegance meets expertise. Our mission is to empower women and men to feel confident and beautiful in their own skin. With a team of skilled professionals specializing in makeup, bridal transformations, skincare, and more, we create personalized experiences that celebrate your unique beauty.</p>
+            <p>Founded with a passion for beauty and self-care, Aleeza has become a trusted destination for those seeking premium salon services in a luxurious, welcoming environment.</p>
         </div>
     </section>
 
@@ -37,52 +51,124 @@
             <h2>Our Services</h2>
             <div class="service-grid">
                 <div class="service">
-                    <h3>Hair Styling</h3>
-                    <p>Professional haircuts, coloring, and styling</p>
+                    <h3>Professional Makeup</h3>
+                    <p>Expert makeup application for any occasion, from natural looks to glamorous transformations.</p>
                 </div>
                 <div class="service">
-                    <h3>Facial Treatments</h3>
-                    <p>Rejuvenating facials for all skin types</p>
+                    <h3>Bridal Packages</h3>
+                    <p>Complete bridal beauty packages including makeup, hair, and skincare for your special day.</p>
+                </div>
+                <div class="service">
+                    <h3>Skincare Treatments</h3>
+                    <p>Advanced facial treatments and skincare routines to rejuvenate and maintain healthy skin.</p>
+                </div>
+                <div class="service">
+                    <h3>Hair Styling</h3>
+                    <p>Professional haircuts, coloring, styling, and treatments for all hair types.</p>
                 </div>
                 <div class="service">
                     <h3>Manicure & Pedicure</h3>
-                    <p>Complete nail care services</p>
+                    <p>Luxurious nail care services with premium products and techniques.</p>
                 </div>
                 <div class="service">
-                    <h3>Body Massage</h3>
-                    <p>Relaxing massages to relieve stress</p>
+                    <h3>Spa & Massage</h3>
+                    <p>Relaxing spa treatments and massages to rejuvenate body and mind.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="about" class="about">
+    <section id="gallery" class="gallery">
         <div class="container">
-            <h2>About Us</h2>
-            <p>At Glamour & Glow, we believe in enhancing your natural beauty with professional care and the latest techniques. Our experienced stylists and therapists are dedicated to providing you with an exceptional experience.</p>
+            <h2>Our Gallery</h2>
+            <div class="gallery-grid">
+                <img src="https://via.placeholder.com/300x300/FFB6C1/FFFFFF?text=Bridal+Makeup" alt="Bridal Makeup" class="gallery-item">
+                <img src="https://via.placeholder.com/300x300/FFD700/FFFFFF?text=Facial+Treatment" alt="Facial Treatment" class="gallery-item">
+                <img src="https://via.placeholder.com/300x300/FF69B4/FFFFFF?text=Hair+Styling" alt="Hair Styling" class="gallery-item">
+                <img src="https://via.placeholder.com/300x300/F0E68C/FFFFFF?text=Manicure" alt="Manicure" class="gallery-item">
+                <img src="https://via.placeholder.com/300x300/FFE4E1/FFFFFF?text=Spa+Massage" alt="Spa Massage" class="gallery-item">
+                <img src="https://via.placeholder.com/300x300/FFFACD/FFFFFF?text=Skincare" alt="Skincare" class="gallery-item">
+            </div>
+        </div>
+    </section>
+
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <h2>What Our Clients Say</h2>
+            <div class="testimonial-carousel">
+                <div class="testimonial active">
+                    <p>"Aleeza transformed my wedding day! The bridal makeup was flawless and lasted all day. Highly recommend!"</p>
+                    <cite>- Sarah Johnson</cite>
+                </div>
+                <div class="testimonial">
+                    <p>"Amazing facial treatments. My skin has never looked better. The staff is professional and caring."</p>
+                    <cite>- Emily Davis</cite>
+                </div>
+                <div class="testimonial">
+                    <p>"Best hair styling experience ever. They understood exactly what I wanted and delivered perfection."</p>
+                    <cite>- Maria Rodriguez</cite>
+                </div>
+            </div>
+            <div class="carousel-controls">
+                <button class="prev"><</button>
+                <button class="next">></button>
+            </div>
         </div>
     </section>
 
     <section id="contact" class="contact">
         <div class="container">
-            <h2>Contact Us</h2>
-            <form>
-                <input type="text" placeholder="Your Name" required>
-                <input type="email" placeholder="Your Email" required>
-                <textarea placeholder="Your Message" required></textarea>
-                <button type="submit" class="btn">Send Message</button>
-            </form>
+            <h2>Book Your Appointment</h2>
+            <div class="contact-content">
+                <div class="booking-form">
+                    <form id="appointment-form">
+                        <input type="text" name="name" placeholder="Your Name" required>
+                        <input type="email" name="email" placeholder="Your Email" required>
+                        <input type="tel" name="phone" placeholder="Phone Number" required>
+                        <select name="service" required>
+                            <option value="">Select Service</option>
+                            <option value="makeup">Professional Makeup</option>
+                            <option value="bridal">Bridal Package</option>
+                            <option value="skincare">Skincare Treatment</option>
+                            <option value="hair">Hair Styling</option>
+                            <option value="nails">Manicure/Pedicure</option>
+                            <option value="spa">Spa & Massage</option>
+                        </select>
+                        <input type="date" name="date" required>
+                        <input type="time" name="time" required>
+                        <textarea name="message" placeholder="Additional Notes"></textarea>
+                        <button type="submit" class="btn">Book Appointment</button>
+                    </form>
+                    <a href="https://wa.me/1234567890?text=Hi%20Aleeza,%20I'd%20like%20to%20book%20an%20appointment" class="whatsapp-btn" target="_blank">
+                        <img src="https://via.placeholder.com/50x50/25D366/FFFFFF?text=WA" alt="WhatsApp"> Book via WhatsApp
+                    </a>
+                </div>
+                <div class="map">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.1!2d-73.987!3d40.7589!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDAuNzU4OSwtNzMuOTg3!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
         </div>
     </section>
 
     <footer>
         <div class="container">
-            <p>&copy; 2023 ALEEZA BEAUTY MAKEOVER STUDIO. All rights reserved.</p>
-            <div class="social-links">
-                <a href="#">Facebook</a>
-                <a href="#">Instagram</a>
-                <a href="#">Twitter</a>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <p>123 Beauty Lane, Glamour City, GC 12345</p>
+                    <p>Phone: (123) 456-7890</p>
+                    <p>Email: info@aleezabeauty.com</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <div class="social-links">
+                        <a href="#" target="_blank">Facebook</a>
+                        <a href="#" target="_blank">Instagram</a>
+                        <a href="#" target="_blank">Twitter</a>
+                    </div>
+                </div>
             </div>
+            <p>&copy; 2023 ALEEZA BEAUTY MAKEOVER STUDIO. All rights reserved.</p>
         </div>
     </footer>
 
