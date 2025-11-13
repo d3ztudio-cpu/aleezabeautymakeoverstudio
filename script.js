@@ -1,18 +1,32 @@
-// Hamburger menu toggle
+// Side Drawer Toggle
 const hamburger = document.getElementById('hamburger');
-const navMenu = document.getElementById('nav-menu');
+const sideDrawer = document.getElementById('side-drawer');
+const drawerCloseBtn = document.getElementById('close-drawer');
 
 hamburger.addEventListener('click', () => {
     hamburger.classList.toggle('open');
-    navMenu.classList.toggle('open');
+    sideDrawer.classList.toggle('open');
 });
 
-// Close menu when clicking a link
-navMenu.querySelectorAll('a').forEach(link => {
+drawerCloseBtn.addEventListener('click', () => {
+    hamburger.classList.remove('open');
+    sideDrawer.classList.remove('open');
+});
+
+// Close drawer when clicking a link
+sideDrawer.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
         hamburger.classList.remove('open');
-        navMenu.classList.remove('open');
+        sideDrawer.classList.remove('open');
     });
+});
+
+// Close drawer when clicking overlay
+sideDrawer.addEventListener('click', (e) => {
+    if (e.target === sideDrawer) {
+        hamburger.classList.remove('open');
+        sideDrawer.classList.remove('open');
+    }
 });
 
 // Smooth scrolling for navigation links
