@@ -4,10 +4,10 @@ import { motion } from 'framer-motion';
 const SideMenu = ({ isOpen, setIsOpen, scrollToSection }) => {
   return (
     <motion.div
-      initial={{ x: '100%' }}
-      animate={{ x: isOpen ? 0 : '100%' }}
+      initial={{ y: '-100%' }}
+      animate={{ y: isOpen ? 0 : '-100%' }}
       transition={{ type: 'tween' }}
-      className="fixed top-0 right-0 h-full w-80 bg-gradient-to-b from-pink-100 to-rose-100 z-50 shadow-lg"
+      className="fixed top-16 right-4 w-64 bg-gradient-to-b from-pink-100 to-rose-100 z-50 shadow-lg rounded-lg"
     >
       <div className="p-6">
         <button onClick={() => setIsOpen(false)} className="text-2xl mb-8 text-gray-800">×</button>
