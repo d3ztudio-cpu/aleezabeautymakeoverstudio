@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 
 const BookingForm = () => {
-  const [form, setForm] = useState({ name: '', phone: '', service: '', message: '' });
-  const [date, setDate] = useState(new Date());
+  const [form, setForm] = useState({ name: '', phone: '', service: '', message: '', date: '' });
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -47,10 +44,12 @@ const BookingForm = () => {
               <option>Manicure & Pedicure</option>
               <option>Hair Treatments</option>
             </select>
-            <DatePicker
-              selected={date}
-              onChange={setDate}
+            <input
+              type="date"
+              value={form.date}
+              onChange={(e) => setForm({ ...form, date: e.target.value })}
               className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500"
+              required
             />
             <textarea
               placeholder="Message"
