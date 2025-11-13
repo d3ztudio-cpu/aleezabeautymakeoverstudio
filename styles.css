@@ -713,7 +713,7 @@ footer {
     border-radius: 15px;
     transition: all 0.3s ease;
     display: block;
-    text-align: center;
+    text-align: left;
     background: rgba(255,255,255,0.9);
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     border: 1px solid rgba(233, 30, 99, 0.1);
@@ -1100,6 +1100,7 @@ footer {
     .drawer-menu li a {
         font-size: 0.95rem;
         padding: 0.6rem 0.8rem;
+        text-align: left;
     }
 }
 
