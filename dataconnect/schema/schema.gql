@@ -1,0 +1,48 @@
+type Service @table {
+  name: String!
+  price: Float!
+  description: String
+  durationMinutes: Int
+}
+
+type Stylist @table {
+  name: String!
+  bio: String
+  photoUrl: String
+  specialization: String
+}
+
+type Customer @table {
+  displayName: String!
+  email: String
+  phoneNumber: String
+  createdAt: Timestamp!
+}
+
+type Appointment @table {
+  service: Service!
+  stylist: Stylist!
+  customer: Customer!
+  appointmentDateTime: Timestamp!
+  status: String!
+  notes: String
+  createdAt: Timestamp!
+}
+
+type PortfolioItem @table {
+  stylist: Stylist!
+  imageUrl: String!
+  title: String!
+  description: String
+}
+
+type GalleryImage @table {
+  url: String!
+  caption: String
+  source: String
+  createdAt: Timestamp!
+}
+
+type Query {
+  galleryImages: [GalleryImage!]! @auth(level: PUBLIC)
+}

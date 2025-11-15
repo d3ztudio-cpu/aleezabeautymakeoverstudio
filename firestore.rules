@@ -1,0 +1,26 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email in [
+          "d3ztudio@gmail.com",
+          "yoursecondadmin@gmail.com"
+        ];
+    }
+
+    // GALLERY IMAGES
+    match /galleryImages/{docId} {
+      allow read: if true;                  // Anyone can view gallery
+      allow create, update, delete: if isAdmin(); // Only admin can modify
+    }
+
+    // CONTACT FORM SUBMISSIONS
+    match /contacts/{docId} {
+      allow create: if true;  // Anyone can submit contact form
+      allow read, update, delete: if isAdmin(); // Only admin can view/modify
+    }
+
+  }
+}
