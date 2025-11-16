@@ -3,7 +3,7 @@
 let supabaseClient = null;
 const galleryContainer = document.getElementById('gallery-container');
 const backgroundElement = document.getElementById('gallery-background');
-const bucketName = 'gallery'; // Replace with your bucket name
+const bucketName = 'gallary'; // Replace with your bucket name
 let currentOffset = 0;
 const batchSize = 20;
 let isLoading = false;
@@ -11,8 +11,8 @@ let allImagesLoaded = false;
 
 // Initialize Supabase
 async function initSupabase() {
-    const supabaseUrl = 'YOUR_SUPABASE_URL'; // Replace with your Supabase URL
-    const supabaseAnonKey = 'YOUR_SUPABASE_ANON_KEY'; // Replace with your Supabase anon key
+    const supabaseUrl = 'https://eaamxtitxrsteidkmskl.supabase.co';
+    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVhYW14dGl0eHJzdGVpZGttc2tsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5OTg1MzAsImV4cCI6MjA3ODU3NDUzMH0.p3Ee1NH1LfsPfkRg6KtxoY9azmwmqquFO0HqwswRXO8';
 
     supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
     console.log('Supabase initialized');
@@ -119,10 +119,11 @@ function subscribeToUpdates() {
         .subscribe();
 }
 
-// Render gallery (append new images)
+// Render gallery (grid layout)
 function renderGallery(images, append = false) {
     if (!append) {
         galleryContainer.innerHTML = '';
+        galleryContainer.classList.add('gallery-grid');
     }
 
     images.forEach(image => {
@@ -133,6 +134,7 @@ function renderGallery(images, append = false) {
         img.dataset.src = image.url; // For lazy loading
         img.alt = image.name;
         img.loading = 'lazy';
+        img.style.objectFit = 'cover';
 
         item.appendChild(img);
         galleryContainer.appendChild(item);
@@ -175,9 +177,12 @@ function resetGallery() {
 // Apply scroll animations using IntersectionObserver
 function applyScrollAnimations() {
     const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
+        entries.forEach((entry, index) => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('animate-in');
+                // Add staggered animations
+                setTimeout(() => {
+                    entry.target.classList.add('animate-fade-in', 'animate-scale-in', 'animate-slide-up');
+                }, index * 100);
                 observer.unobserve(entry.target);
             }
         });
@@ -193,10 +198,6 @@ function applyScrollAnimations() {
     const parallaxObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                const rect = entry.boundingClientRect;
-                const scrollPercent = (window.innerHeight - rect.top) / (window.innerHeight + rect.height);
-                const offset = (scrollPercent - 0.5) * 100;
-                entry.target.style.setProperty('--parallax-offset', `${offset}px`);
                 entry.target.classList.add('parallax');
             }
         });
@@ -225,17 +226,25 @@ function applyScrollAnimations() {
 
 // Apply background effects
 function applyBackgroundEffects() {
+    // Add gradient shift class
+    backgroundElement.classList.add('gradient-shift');
+
     // Floating particles
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 30; i++) {
         const particle = document.createElement('div');
         particle.className = 'particle';
         particle.style.left = Math.random() * 100 + '%';
-        particle.style.animationDelay = Math.random() * 6 + 's';
-        particle.style.animationDuration = (Math.random() * 4 + 6) + 's';
+        particle.style.top = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 10 + 's';
+        particle.style.animationDuration = (Math.random() * 5 + 10) + 's';
         backgroundElement.appendChild(particle);
     }
 
-    // Gradient shift is handled in CSS
+    // Add glow effect to gallery items
+    const items = document.querySelectorAll('.gallery-item');
+    items.forEach(item => {
+        item.classList.add('glow-effect');
+    });
 }
 
 // Lazy load images
