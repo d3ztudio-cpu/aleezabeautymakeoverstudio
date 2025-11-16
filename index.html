@@ -442,13 +442,6 @@
         </div>
     </footer>
 
-    <!-- Lightbox -->
-    <div id="lightbox" class="lightbox fixed inset-0 bg-black bg-opacity-90 z-50 items-center justify-center">
-        <img id="lightbox-img" src="" alt="" class="max-w-full max-h-full">
-        <button id="lightbox-close" class="absolute top-4 right-4 text-white text-2xl">&times;</button>
-        <button id="lightbox-prev" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-2xl">&larr;</button>
-        <button id="lightbox-next" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-2xl">&rarr;</button>
-    </div>
 
 
     <script>
@@ -543,36 +536,6 @@
 
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        // Gallery lightbox
-        const galleryItems = document.querySelectorAll('.gallery-item');
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightbox-img');
-        let currentIndex = 0;
-
-        galleryItems.forEach((item, index) => {
-            const img = item.querySelector('img');
-            if (!img) return;
-            item.addEventListener('click', (e) => {
-                if (e.target.tagName === 'A') return;
-                currentIndex = index;
-                lightboxImg.src = img.dataset.src;
-                lightbox.classList.add('show');
-            });
-        });
-
-        document.getElementById('lightbox-close').addEventListener('click', () => {
-            lightbox.classList.remove('show');
-        });
-
-        document.getElementById('lightbox-prev').addEventListener('click', () => {
-            currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
-            lightboxImg.src = galleryItems[currentIndex].querySelector('img').dataset.src;
-        });
-
-        document.getElementById('lightbox-next').addEventListener('click', () => {
-            currentIndex = (currentIndex + 1) % galleryItems.length;
-            lightboxImg.src = galleryItems[currentIndex].querySelector('img').dataset.src;
-        });
 
         // Contact Form submission
         document.getElementById('contactForm').addEventListener('submit', async (e) => {
