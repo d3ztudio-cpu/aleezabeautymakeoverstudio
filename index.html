@@ -569,7 +569,7 @@
             item.addEventListener('click', (e) => {
                 if (e.target.tagName === 'A') return;
                 currentIndex = index;
-                lightboxImg.src = img.dataset.src;
+                lightboxImg.src = item.dataset.src;
                 lightbox.classList.add('show');
             });
         });
@@ -580,12 +580,12 @@
 
         document.getElementById('lightbox-prev').addEventListener('click', () => {
             currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
-            lightboxImg.src = galleryItems[currentIndex].querySelector('img').dataset.src;
+            lightboxImg.src = galleryItems[currentIndex].dataset.src;
         });
 
         document.getElementById('lightbox-next').addEventListener('click', () => {
             currentIndex = (currentIndex + 1) % galleryItems.length;
-            lightboxImg.src = galleryItems[currentIndex].querySelector('img').dataset.src;
+            lightboxImg.src = galleryItems[currentIndex].dataset.src;
         });
 
         // Contact Form submission
