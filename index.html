@@ -8,8 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-cbPbsYvV.css">
 </head>
 <body class="bg-primary text-gold">
     <!-- Header -->
@@ -569,7 +569,7 @@
             item.addEventListener('click', (e) => {
                 if (e.target.tagName === 'A') return;
                 currentIndex = index;
-                lightboxImg.src = item.dataset.src;
+                lightboxImg.src = img.dataset.src;
                 lightbox.classList.add('show');
             });
         });
@@ -580,12 +580,12 @@
 
         document.getElementById('lightbox-prev').addEventListener('click', () => {
             currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
-            lightboxImg.src = galleryItems[currentIndex].dataset.src;
+            lightboxImg.src = galleryItems[currentIndex].querySelector('img').dataset.src;
         });
 
         document.getElementById('lightbox-next').addEventListener('click', () => {
             currentIndex = (currentIndex + 1) % galleryItems.length;
-            lightboxImg.src = galleryItems[currentIndex].dataset.src;
+            lightboxImg.src = galleryItems[currentIndex].querySelector('img').dataset.src;
         });
 
         // Contact Form submission
