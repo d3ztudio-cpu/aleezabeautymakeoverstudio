@@ -1,278 +1,894 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Aleeza Beauty Makeover Studio</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
-    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALEEZA BEAUTY MAKEOVER STUDIO</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="style.css">
     <style>
-      body {
-        font-family: 'Poppins', sans-serif;
-      }
-      h1, h2, h3, h4, h5, h6 {
-        font-family: 'Playfair Display', serif;
-      }
+        body { font-family: 'Inter', sans-serif; }
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        #cursor {
+            width: 16px;
+            height: 16px;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        .ken-burns {
+            animation: kenBurns 20s ease-in-out infinite alternate;
+        }
+        @keyframes kenBurns {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.1) translate(-10px, -10px); }
+        }
+        .fade-in-up {
+            animation: fadeInUp 1s ease-out forwards;
+        }
+        .fade-in-up.delay {
+            animation-delay: 0.5s;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.6s ease-out;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .lightbox { display: none; }
+        .lightbox.show { display: flex; }
+        .before-after {
+            position: relative;
+            overflow: hidden;
+        }
+        .before-after img {
+            width: 100%;
+            height: auto;
+        }
+        .before-after .after {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50%;
+            overflow: hidden;
+        }
+        .before-after .after img {
+            width: 200%;
+            margin-left: -100%;
+        }
+        .slider {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 4px;
+            height: 100%;
+            background: #fff;
+            cursor: ew-resize;
+            transform: translateX(-50%);
+        }
+        .slider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100vh;
+            background: linear-gradient(to bottom, #3c0c31, #D4AF37);
+            backdrop-filter: blur(10px);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            z-index: 50;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            border-left: 4px solid #D4AF37;
+        }
+        .mobile-nav.show {
+            transform: translateX(0);
+        }
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 40;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        .overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .signin-modal {
+            display: none;
+        }
+        .signin-modal.show {
+            display: flex;
+        }
+        .hamburger {
+            width: 24px;
+            height: 18px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+        .line {
+            width: 100%;
+            height: 2px;
+            background: white;
+            transition: all 0.3s;
+        }
+        .hamburger.open .line:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .hamburger.open .line:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.open .line:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+        .logo {
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.7); }
+            50% { box-shadow: 0 0 20px rgba(255, 255, 255, 1); }
+        }
+        @media (max-width: 768px) {
+            #cursor { display: none; }
+        }
+        @keyframes letterAppear {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .letter {
+            display: inline-block;
+            animation: letterAppear 0.6s ease-out forwards;
+            opacity: 0;
+        }
     </style>
-  </head>
-  <body>
-    <!-- Navbar -->
-    <nav class="sticky top-0 w-full z-50 transition-all duration-300 bg-transparent">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16 sm:h-20">
-          <img src="/logo.png" alt="Aleeza Beauty" class="h-10 sm:h-12" />
-          <button id="menu-btn" class="text-2xl sm:text-3xl text-gray-800 p-2 sm:p-3 rounded-md hover:bg-gray-100 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label="Open menu">
-            ☰
-          </button>
+  <script type="module" crossorigin src="/assets/index-RQc2OtCR.js"></script>
+</head>
+<body class="bg-white text-black">
+    <!-- Header -->
+    <header id="header" class="fixed top-0 w-full bg-transparent backdrop-blur-md z-50 transition-all duration-300">
+        <div class="container mx-auto px-6 py-6 flex justify-between items-center">
+            <a href="#home" class="text-lg font-bold text-white" style="white-space: nowrap;">ALEEZA BEAUTY MAKEOVER STUDIO</a>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#home" class="text-white hover:text-primary transition">Home</a>
+                <a href="#about" class="text-white hover:text-primary transition">About</a>
+                <a href="#services" class="text-white hover:text-primary transition">Services</a>
+                <a href="#courses" class="text-white hover:text-primary transition">Courses</a>
+                <a href="#gallery" class="text-white hover:text-primary transition">Gallery</a>
+                <a href="#contact" class="text-white hover:text-primary transition">Contact</a>
+            </nav>
+            <button class="md:hidden text-white" id="menu-toggle">
+                <div class="hamburger">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+            </button>
         </div>
-      </div>
-    </nav>
-
-    <!-- Side Menu -->
-    <div id="side-menu" class="fixed top-16 right-4 w-64 bg-gradient-to-b from-pink-100 to-rose-100 z-50 shadow-lg rounded-lg transform -translate-y-full transition-transform duration-300">
-      <div class="p-6">
-        <button id="close-menu" class="text-2xl mb-8 text-gray-800">×</button>
-        <ul class="flex flex-col space-y-6">
-          <li><button onclick="scrollToSection('home')" class="text-lg text-gray-800 hover:text-rose-600 transition-colors text-center w-full">Home</button></li>
-          <li><button onclick="scrollToSection('about')" class="text-lg text-gray-800 hover:text-rose-600 transition-colors text-center w-full">About Us</button></li>
-          <li><button onclick="scrollToSection('services')" class="text-lg text-gray-800 hover:text-rose-600 transition-colors text-center w-full">Services</button></li>
-          <li><button onclick="scrollToSection('gallery')" class="text-lg text-gray-800 hover:text-rose-600 transition-colors text-center w-full">Gallery</button></li>
-          <li><button onclick="scrollToSection('testimonials')" class="text-lg text-gray-800 hover:text-rose-600 transition-colors text-center w-full">Testimonials</button></li>
-          <li><button onclick="scrollToSection('booking')" class="text-lg text-gray-800 hover:text-rose-600 transition-colors text-center w-full">Booking / Contact</button></li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Hero -->
-    <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
-      <div class="absolute inset-0 bg-gradient-to-r from-pink-200 to-rose-300">
-        <!-- Placeholder for salon imagery -->
-      </div>
-      <div class="relative z-10 text-center text-white">
-        <h1 class="text-5xl md:text-7xl font-serif mb-4 drop-shadow-lg">Redefine Your Beauty with Aleeza.</h1>
-        <button onclick="scrollToSection('booking')" class="bg-rose-600 hover:bg-rose-700 text-white px-8 py-3 rounded-lg shadow-lg transition-all hover:shadow-xl hover:scale-105 font-medium">
-          Book Appointment
-        </button>
-      </div>
-    </section>
-
-    <!-- About Us -->
-    <section id="about" class="py-20 bg-white" data-aos="fade-up">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid md:grid-cols-2 gap-12 items-center">
-          <div>
-            <h2 class="text-4xl font-serif mb-6 text-gray-800">About Aleeza Beauty Makeover Studio</h2>
-            <p class="text-lg text-gray-600 mb-4">
-              At Aleeza Beauty Makeover Studio, we believe that beauty is not just about appearance, but about feeling confident and empowered. Our team of expert stylists and beauty professionals are passionate about transforming your look and enhancing your natural beauty.
-            </p>
-            <p class="text-lg text-gray-600 mb-4">
-              With years of experience in bridal styling, makeovers, and skincare, we provide personalized services that cater to your unique needs. Our commitment to excellence and attention to detail ensure that every client leaves our studio feeling radiant and beautiful.
-            </p>
-            <p class="text-lg text-gray-600">
-              Join us in redefining your beauty journey.
-            </p>
-          </div>
-          <div class="bg-gradient-to-r from-pink-100 to-rose-100 h-96 rounded-lg flex items-center justify-center shadow-lg">
-            <span class="text-gray-500 text-xl">Salon Interior Image</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Services -->
-    <section id="services" class="py-20 bg-gray-50" data-aos="fade-up">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-4xl font-serif text-center mb-12 text-gray-800">Our Services</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-            <h3 class="text-2xl font-semibold mb-4 text-rose-600">Bridal Makeover</h3>
-            <p class="text-gray-600 mb-4">Complete bridal styling and makeup for your special day.</p>
-            <button class="px-4 py-2 bg-rose-600 text-white rounded-lg hover:bg-rose-700 transition-colors">Learn More</button>
-          </div>
-          <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-            <h3 class="text-2xl font-semibold mb-4 text-rose-600">Hair Styling</h3>
-            <p class="text-gray-600 mb-4">Professional hair styling and treatments.</p>
-            <button class="px-4 py-2 bg-rose-600 text-white rounded-lg hover:bg-rose-700 transition-colors">Learn More</button>
-          </div>
-          <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-            <h3 class="text-2xl font-semibold mb-4 text-rose-600">Facials & Skincare</h3>
-            <p class="text-gray-600 mb-4">Rejuvenating facials and skincare treatments.</p>
-            <button class="px-4 py-2 bg-rose-600 text-white rounded-lg hover:bg-rose-700 transition-colors">Learn More</button>
-          </div>
-          <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-            <h3 class="text-2xl font-semibold mb-4 text-rose-600">Manicure & Pedicure</h3>
-            <p class="text-gray-600 mb-4">Nail care and styling services.</p>
-            <button class="px-4 py-2 bg-rose-600 text-white rounded-lg hover:bg-rose-700 transition-colors">Learn More</button>
-          </div>
-          <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-            <h3 class="text-2xl font-semibold mb-4 text-rose-600">Hair Treatments</h3>
-            <p class="text-gray-600 mb-4">Advanced hair treatments for healthy, beautiful hair.</p>
-            <button class="px-4 py-2 bg-rose-600 text-white rounded-lg hover:bg-rose-700 transition-colors">Learn More</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section id="testimonials" class="py-20 bg-gray-50" data-aos="fade-up">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-4xl font-serif text-center mb-12 text-gray-800">Testimonials</h2>
-        <div class="relative">
-          <div id="testimonial-container" class="bg-white p-8 rounded-lg shadow-lg text-center max-w-md mx-auto">
-            <img src="https://via.placeholder.com/100?text=S" alt="Sarah J." class="w-16 h-16 rounded-full mx-auto mb-4" />
-            <p class="text-lg text-gray-600 mb-4">"Amazing experience! The team made me feel beautiful and confident for my wedding day."</p>
-            <p class="font-semibold text-rose-600">Sarah J.</p>
-          </div>
-          <button id="prev-testimonial" class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-rose-600 text-white p-2 rounded-full hover:bg-rose-700 transition-colors">‹</button>
-          <button id="next-testimonial" class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-rose-600 text-white p-2 rounded-full hover:bg-rose-700 transition-colors">›</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- Booking Form -->
-    <section id="booking" class="py-20 bg-gray-50" data-aos="fade-up">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-4xl font-serif text-center mb-12 text-gray-800">Book Your Appointment</h2>
-        <div class="grid md:grid-cols-2 gap-12">
-          <form id="booking-form" class="space-y-6">
-            <input type="text" name="name" placeholder="Name" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500" required />
-            <input type="tel" name="phone" placeholder="Phone" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500" required />
-            <select name="service" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500" required>
-              <option value="">Select Service</option>
-              <option>Bridal Makeover</option>
-              <option>Hair Styling</option>
-              <option>Facials & Skincare</option>
-              <option>Manicure & Pedicure</option>
-              <option>Hair Treatments</option>
-            </select>
-            <input type="date" name="date" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500" required />
-            <textarea name="message" placeholder="Message" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500" rows="4"></textarea>
-            <button type="submit" class="w-full bg-rose-600 text-white p-3 rounded-lg hover:bg-rose-700 transition-colors font-medium">Submit Booking</button>
-          </form>
-          <div class="space-y-8">
-            <a href="https://wa.me/1234567890?text=Hello, I would like to book an appointment." class="block bg-green-600 text-white text-center p-3 rounded-lg hover:bg-green-700 transition-colors font-medium">Book Now on WhatsApp</a>
-            <div>
-              <h3 class="text-2xl font-semibold mb-4 text-gray-800">Find Us</h3>
-              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509374!2d144.9537353153168!3d-37.816279742021665!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf577d1a32f4e!2sMelbourne%20CBD!5e0!3m2!1sen!2sau!4v1633072800000!5m2!1sen!2sau" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" class="rounded-lg shadow-lg"></iframe>
+        <nav class="mobile-nav md:hidden" id="mobile-nav">
+            <div class="px-6 py-8 space-y-6">
+                <a href="#home" class="block text-white hover:text-gold hover:bg-white hover:bg-opacity-10 px-4 py-3 rounded-lg transition-all duration-300 font-semibold">Home</a>
+                <a href="#about" class="block text-white hover:text-gold hover:bg-white hover:bg-opacity-10 px-4 py-3 rounded-lg transition-all duration-300 font-semibold">About</a>
+                <a href="#services" class="block text-white hover:text-gold hover:bg-white hover:bg-opacity-10 px-4 py-3 rounded-lg transition-all duration-300 font-semibold">Services</a>
+                <a href="#courses" class="block text-white hover:text-gold hover:bg-white hover:bg-opacity-10 px-4 py-3 rounded-lg transition-all duration-300 font-semibold">Courses</a>
+                <a href="#gallery" class="block text-white hover:text-gold hover:bg-white hover:bg-opacity-10 px-4 py-3 rounded-lg transition-all duration-300 font-semibold">Gallery</a>
+                <a href="#contact" class="block text-white hover:text-gold hover:bg-white hover:bg-opacity-10 px-4 py-3 rounded-lg transition-all duration-300 font-semibold">Contact</a>
+                <a href="https://wa.me/7034692274" target="_blank" class="block text-white hover:text-gold hover:bg-white hover:bg-opacity-10 px-4 py-3 rounded-lg transition-all duration-300 font-semibold">Help and Support</a>
             </div>
-          </div>
+        </nav>
+        <div id="overlay" class="overlay"></div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative h-screen flex items-center justify-center text-center text-white overflow-hidden">
+        <div class="absolute inset-0 bg-cover bg-center ken-burns" style="background-image: url('https://i.postimg.cc/hPLySwyT/bg.jpg'); background-position: center top;"></div>
+        <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+        <div class="relative z-10">
+            <img src="https://eaamxtitxrsteidkmskl.supabase.co/storage/v1/object/public/Images/LOGO.png" alt="Aleeza Beauty Logo" class="logo w-48 h-48 md:w-64 md:h-64 mx-auto mb-6 fade-in-up">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 fade-in-up tracking-wide"><span id="title-text"></span></h1>
+            <p class="text-lg sm:text-xl md:text-2xl mb-8 fade-in-up delay leading-relaxed">We bring JOY in every touch, creating a beauty experience that makes you feel refreshed, confident, and radiant.</p>
         </div>
-      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 reveal">
+                <div class="relative flex items-center justify-center">
+                    <img src="https://eaamxtitxrsteidkmskl.supabase.co/storage/v1/object/public/Images/WhatsApp%20Image%202025-08-11%20at%2020.55.03_ebddfb14.jpg" alt="Shymi Thomas" class="w-full h-full object-contain rounded-lg shadow-lg">
+                    <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-lg opacity-0 hover:opacity-100 transition-opacity duration-300">
+                        <p class="text-white text-center font-bold">SHYMI THOMAS<br>OWNER OF ALEEZA BEAUTY MAKE OVER STUDIO</p>
+                    </div>
+                </div>
+                <div class="text-justify">
+                    <h2 class="text-4xl font-bold text-primary mb-8">About Aleeza</h2>
+                    <p class="text-lg mb-6 leading-relaxed">Aleeza Beauty Makeover Studio was founded by Mrs. Shymi Thomas on 23 January 2019 with a vision to bring joy, confidence, and elegance to every individual who walks through the door. The studio was inaugurated by her mother and blessed by Rev. Fr. Shaji Kochupurakkal, the former Vicar of Mount Carmel Church, Mundur.</p>
+                    <p class="text-lg mb-6 leading-relaxed">The name Aleeza, meaning joyful, beautifully reflects the spirit of our studio—where every service is delivered with passion, warmth, and a commitment to enhancing natural beauty.</p>
+                    <p class="text-lg mb-6 leading-relaxed">Located near Sobha City Mall, Puzhakkal – Ambakkad Church Road, Thrissur, Kerala, Aleeza Beauty Makeover Studio has grown into a trusted beauty destination known for creativity, professionalism, and genuine care. The studio was renovated with a fresh new look on March 08, 2024, and expanded with the opening of a second shop at the same location on September 2, 2025.</p>
+                    <p class="text-lg mb-6 leading-relaxed">The founder, Mrs. Shymi Thomas, is a highly accomplished beauty professional with several prestigious recognitions to her name:</p>
+                    <ul class="text-lg mb-6 list-disc list-inside space-y-2">
+                        <li>Kalams World Record Holder for Spectacular Ramp Walk – Season 3 (Rising Stars Event)</li>
+                        <li>National-Level Bridal Contest Winner</li>
+                        <li>Kerala State-Level 4th Runner-Up (Bridal Contest)</li>
+                        <li>Best Eye Makeup Award – State Level</li>
+                    </ul>
+                    <p class="text-lg leading-relaxed">At Aleeza Beauty Makeover Studio, we believe in delivering joy in every touch—creating beauty experiences that inspire confidence, happiness, and a radiant you.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Achievements Section -->
+    <section id="achievements" class="py-20 bg-primary text-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-12">Achievements</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center reveal">
+                    <div class="bg-white bg-opacity-10 p-6 rounded-lg hover:bg-opacity-20 transition">
+                        <h3 class="text-xl font-semibold mb-2">Kalams World Record</h3>
+                        <p>Spectacular Ramp Walk</p>
+                    </div>
+                </div>
+                <div class="text-center reveal">
+                    <div class="bg-white bg-opacity-10 p-6 rounded-lg hover:bg-opacity-20 transition">
+                        <h3 class="text-xl font-semibold mb-2">National Level Winner</h3>
+                        <p>Bridal Contest</p>
+                    </div>
+                </div>
+                <div class="text-center reveal">
+                    <div class="bg-white bg-opacity-10 p-6 rounded-lg hover:bg-opacity-20 transition">
+                        <h3 class="text-xl font-semibold mb-2">Kerala State Level</h3>
+                        <p>4th Runner-up Award for Bridal Contest</p>
+                    </div>
+                </div>
+                <div class="text-center reveal">
+                    <div class="bg-white bg-opacity-10 p-6 rounded-lg hover:bg-opacity-20 transition">
+                        <h3 class="text-xl font-semibold mb-2">State Level Award</h3>
+                        <p>Best Eye Makeup</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-primary bg-opacity-20">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center text-primary mb-12">Our Services</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition transform hover:scale-105 reveal">
+                    <h3 class="text-2xl font-semibold mb-4 text-black">Facial</h3>
+                    <p class="text-gray-600">Rejuvenating facial treatments for healthy, glowing skin.</p>
+                    <div class="mt-4 opacity-0 hover:opacity-100 transition">
+                        <a href="#contact" class="text-gold font-semibold">Learn More</a>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition transform hover:scale-105 reveal">
+                    <h3 class="text-2xl font-semibold mb-4 text-black">Bleach</h3>
+                    <p class="text-gray-600">Safe bleaching services to lighten and brighten your skin.</p>
+                    <div class="mt-4 opacity-0 hover:opacity-100 transition">
+                        <a href="#contact" class="text-gold font-semibold">Learn More</a>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition transform hover:scale-105 reveal">
+                    <h3 class="text-2xl font-semibold mb-4 text-black">Advanced Facial</h3>
+                    <p class="text-gray-600">Premium facial treatments with advanced techniques.</p>
+                    <div class="mt-4 opacity-0 hover:opacity-100 transition">
+                        <a href="#contact" class="text-gold font-semibold">Learn More</a>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition transform hover:scale-105 reveal">
+                    <h3 class="text-2xl font-semibold mb-4 text-black">Cutting</h3>
+                    <p class="text-gray-600">Professional hair cutting services for all styles.</p>
+                    <div class="mt-4 opacity-0 hover:opacity-100 transition">
+                        <a href="#contact" class="text-gold font-semibold">Learn More</a>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition transform hover:scale-105 reveal">
+                    <h3 class="text-2xl font-semibold mb-4 text-black">Colouring</h3>
+                    <p class="text-gray-600">Expert hair colouring for vibrant, long-lasting results.</p>
+                    <div class="mt-4 opacity-0 hover:opacity-100 transition">
+                        <a href="#contact" class="text-gold font-semibold">Learn More</a>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition transform hover:scale-105 reveal">
+                    <h3 class="text-2xl font-semibold mb-4 text-black">Chemical Treatments</h3>
+                    <p class="text-gray-600">Specialized chemical treatments for hair health and style.</p>
+                    <div class="mt-4 opacity-0 hover:opacity-100 transition">
+                        <a href="#contact" class="text-gold font-semibold">Learn More</a>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition transform hover:scale-105 reveal">
+                    <h3 class="text-2xl font-semibold mb-4 text-black">Protein Treatments</h3>
+                    <p class="text-gray-600">Nourishing protein treatments to strengthen your hair.</p>
+                    <div class="mt-4 opacity-0 hover:opacity-100 transition">
+                        <a href="#contact" class="text-gold font-semibold">Learn More</a>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition transform hover:scale-105 reveal">
+                    <h3 class="text-2xl font-semibold mb-4 text-black">Bridal Makeup</h3>
+                    <p class="text-gray-600">Flawless, timeless looks for your special day.</p>
+                    <div class="mt-4 opacity-0 hover:opacity-100 transition">
+                        <a href="#contact" class="text-gold font-semibold">Learn More</a>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition transform hover:scale-105 reveal">
+                    <h3 class="text-2xl font-semibold mb-4 text-black">Groom Makeup</h3>
+                    <p class="text-gray-600">Refined grooming and makeup for the modern groom.</p>
+                    <div class="mt-4 opacity-0 hover:opacity-100 transition">
+                        <a href="#contact" class="text-gold font-semibold">Learn More</a>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition transform hover:scale-105 reveal">
+                    <h3 class="text-2xl font-semibold mb-4 text-black">Guest Look Makeup</h3>
+                    <p class="text-gray-600">Elegant makeup for wedding guests and special occasions.</p>
+                    <div class="mt-4 opacity-0 hover:opacity-100 transition">
+                        <a href="#contact" class="text-gold font-semibold">Learn More</a>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition transform hover:scale-105 reveal">
+                    <h3 class="text-2xl font-semibold mb-4 text-black">Eyebrow Threading</h3>
+                    <p class="text-gray-600">Precise eyebrow threading for perfect shape and definition.</p>
+                    <div class="mt-4 opacity-0 hover:opacity-100 transition">
+                        <a href="#contact" class="text-gold font-semibold">Learn More</a>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition transform hover:scale-105 reveal">
+                    <h3 class="text-2xl font-semibold mb-4 text-black">Bridal Services</h3>
+                    <p class="text-gray-600">Complete bridal packages including makeup and hair.</p>
+                    <div class="mt-4 opacity-0 hover:opacity-100 transition">
+                        <a href="#contact" class="text-gold font-semibold">Learn More</a>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition transform hover:scale-105 reveal">
+                    <h3 class="text-2xl font-semibold mb-4 text-black">Haircut</h3>
+                    <p class="text-gray-600">Professional haircuts tailored to your style.</p>
+                    <div class="mt-4 opacity-0 hover:opacity-100 transition">
+                        <a href="#contact" class="text-gold font-semibold">Learn More</a>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition transform hover:scale-105 reveal">
+                    <h3 class="text-2xl font-semibold mb-4 text-black">Hairstyling</h3>
+                    <p class="text-gray-600">Creative hairstyling for any occasion.</p>
+                    <div class="mt-4 opacity-0 hover:opacity-100 transition">
+                        <a href="#contact" class="text-gold font-semibold">Learn More</a>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition transform hover:scale-105 reveal">
+                    <h3 class="text-2xl font-semibold mb-4 text-black">Hair Threading</h3>
+                    <p class="text-gray-600">Gentle hair threading for unwanted hair removal.</p>
+                    <div class="mt-4 opacity-0 hover:opacity-100 transition">
+                        <a href="#contact" class="text-gold font-semibold">Learn More</a>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition transform hover:scale-105 reveal">
+                    <h3 class="text-2xl font-semibold mb-4 text-black">Shampoo & Conditioning</h3>
+                    <p class="text-gray-600">Luxurious shampoo and conditioning treatments.</p>
+                    <div class="mt-4 opacity-0 hover:opacity-100 transition">
+                        <a href="#contact" class="text-gold font-semibold">Learn More</a>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition transform hover:scale-105 reveal">
+                    <h3 class="text-2xl font-semibold mb-4 text-black">Skin Care</h3>
+                    <p class="text-gray-600">Comprehensive skin care treatments and advice.</p>
+                    <div class="mt-4 opacity-0 hover:opacity-100 transition">
+                        <a href="#contact" class="text-gold font-semibold">Learn More</a>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition transform hover:scale-105 reveal">
+                    <h3 class="text-2xl font-semibold mb-4 text-black">Tanning</h3>
+                    <p class="text-gray-600">Professional tanning services for a sun-kissed glow.</p>
+                    <div class="mt-4 opacity-0 hover:opacity-100 transition">
+                        <a href="#contact" class="text-gold font-semibold">Learn More</a>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition transform hover:scale-105 reveal">
+                    <h3 class="text-2xl font-semibold mb-4 text-black">Wedding and Event Preparation</h3>
+                    <p class="text-gray-600">Full preparation services for weddings and events.</p>
+                    <div class="mt-4 opacity-0 hover:opacity-100 transition">
+                        <a href="#contact" class="text-gold font-semibold">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses Section -->
+    <section id="courses" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center text-primary mb-12">Makeup Courses Offered</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-primary bg-opacity-20 p-6 rounded-lg shadow-md hover:shadow-xl transition transform hover:scale-105 reveal">
+                    <h3 class="text-2xl font-semibold mb-4 text-black">Hair Styling</h3>
+                    <p class="text-gray-600">Learn professional hair styling techniques for various occasions and looks.</p>
+                    <div class="mt-4">
+                        <a href="courses.html" class="text-gold font-semibold">Enroll Now</a>
+                    </div>
+                </div>
+                <div class="bg-primary bg-opacity-20 p-6 rounded-lg shadow-md hover:shadow-xl transition transform hover:scale-105 reveal">
+                    <h3 class="text-2xl font-semibold mb-4 text-black">Saree Draping</h3>
+                    <p class="text-gray-600">Master the art of elegant saree draping for traditional and modern styles.</p>
+                    <div class="mt-4">
+                        <a href="courses.html" class="text-gold font-semibold">Enroll Now</a>
+                    </div>
+                </div>
+                <div class="bg-primary bg-opacity-20 p-6 rounded-lg shadow-md hover:shadow-xl transition transform hover:scale-105 reveal">
+                    <h3 class="text-2xl font-semibold mb-4 text-black">Flower Setting</h3>
+                    <p class="text-gray-600">Creative flower arrangement and setting techniques for hair and accessories.</p>
+                    <div class="mt-4">
+                        <a href="courses.html" class="text-gold font-semibold">Enroll Now</a>
+                    </div>
+                </div>
+                <div class="bg-primary bg-opacity-20 p-6 rounded-lg shadow-md hover:shadow-xl transition transform hover:scale-105 reveal">
+                    <h3 class="text-2xl font-semibold mb-4 text-black">Jewellery Setting</h3>
+                    <p class="text-gray-600">Learn to set and arrange jewellery for perfect complement to any look.</p>
+                    <div class="mt-4">
+                        <a href="courses.html" class="text-gold font-semibold">Enroll Now</a>
+                    </div>
+                </div>
+                <div class="bg-primary bg-opacity-20 p-6 rounded-lg shadow-md hover:shadow-xl transition transform hover:scale-105 reveal">
+                    <h3 class="text-2xl font-semibold mb-4 text-black">Hair Colouring</h3>
+                    <p class="text-gray-600">Professional hair colouring techniques for vibrant and lasting results.</p>
+                    <div class="mt-4">
+                        <a href="courses.html" class="text-gold font-semibold">Enroll Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center text-primary mb-12">Gallery</h2>
+            <div id="gallery-container" class="gallery-container">
+                <!-- Images will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-primary text-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center text-white mb-12">Contact Us</h2>
+            <div class="max-w-2xl mx-auto">
+                <form id="contactForm" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <input type="text" name="name" placeholder="Name" required class="w-full p-3 rounded-lg bg-black bg-opacity-10 border border-white border-opacity-20 focus:outline-none focus:border-gold text-white">
+                        <input type="email" name="email" placeholder="Email" required class="w-full p-3 rounded-lg bg-black bg-opacity-10 border border-white border-opacity-20 focus:outline-none focus:border-gold text-white">
+                    </div>
+                    <input type="tel" name="phone" placeholder="+91 Phone Number" required class="w-full p-3 rounded-lg bg-black bg-opacity-10 border border-white border-opacity-20 focus:outline-none focus:border-gold text-white">
+                    <input type="text" name="address" placeholder="Address" required class="w-full p-3 rounded-lg bg-black bg-opacity-10 border border-white border-opacity-20 focus:outline-none focus:border-gold text-white">
+                    <select name="service" required class="w-full p-3 rounded-lg bg-primary border border-gold border-opacity-50 shadow-xl focus:outline-none focus:border-gold focus:shadow-2xl text-white">
+                        <option value="">Please select a service...</option>
+                        <option>Facial</option>
+                        <option>Bleach</option>
+                        <option>Advanced Facial</option>
+                        <option>Cutting</option>
+                        <option>Colouring</option>
+                        <option>Chemical Treatments</option>
+                        <option>Protein Treatments</option>
+                        <option>Bridal Makeup</option>
+                        <option>Groom Makeup</option>
+                        <option>Guest Look Makeup</option>
+                        <option>Eyebrow Threading</option>
+                        <option>Bridal Services</option>
+                        <option>Haircut</option>
+                        <option>Hairstyling</option>
+                        <option>Hair Threading</option>
+                        <option>Shampoo & Conditioning</option>
+                        <option>Skin Care</option>
+                        <option>Tanning</option>
+                        <option>Wedding and Event Preparation</option>
+                        <option>General Inquiry</option>
+                    </select>
+                    <textarea name="message" placeholder="Your Message (Optional)" rows="4" class="w-full p-3 rounded-lg bg-black bg-opacity-10 border border-white border-opacity-20 focus:outline-none focus:border-gold text-white"></textarea>
+                    <button type="submit" id="contactSubmitBtn" class="w-full bg-white text-primary py-3 rounded-lg font-semibold hover:bg-opacity-90">Send Message</button>
+                </form>
+
+                <!-- Success Modal -->
+                <div id="contactSuccessModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+                    <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4 text-center">
+                        <h2 class="text-2xl font-bold text-primary mb-4">Message Sent Successfully!</h2>
+                        <p class="text-gray-700 mb-6">Thank you for your inquiry. Our team will contact you shortly. You can also click the button below to send your details to us on WhatsApp for a faster response.</p>
+                        <a id="contactWhatsappBtn" href="#" target="_blank" class="inline-block bg-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-600 transition mr-4">Confirm on WhatsApp</a>
+                        <button id="contactCloseModal" class="text-gray-500 hover:text-gray-700">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-12">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid md:grid-cols-4 gap-8">
-          <div>
-            <img src="/logo.png" alt="Aleeza Beauty" class="h-10 mb-4" />
-            <p class="text-gray-400">Redefine Your Beauty with Aleeza.</p>
-          </div>
-          <div>
-            <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
-            <ul class="space-y-2">
-              <li><a href="#home" class="text-gray-400 hover:text-white transition-colors">Home</a></li>
-              <li><a href="#about" class="text-gray-400 hover:text-white transition-colors">About Us</a></li>
-              <li><a href="#services" class="text-gray-400 hover:text-white transition-colors">Services</a></li>
-              <li><a href="#gallery" class="text-gray-400 hover:text-white transition-colors">Gallery</a></li>
-              <li><a href="#testimonials" class="text-gray-400 hover:text-white transition-colors">Testimonials</a></li>
-              <li><a href="#booking" class="text-gray-400 hover:text-white transition-colors">Booking</a></li>
-            </ul>
-          </div>
-          <div>
-            <h3 class="text-lg font-semibold mb-4">Contact Info</h3>
-            <p class="text-gray-400">Phone: +1 234 567 890</p>
-            <p class="text-gray-400">Email: info@aleezabeauty.com</p>
-          </div>
-          <div>
-            <h3 class="text-lg font-semibold mb-4">Follow Us</h3>
-            <div class="flex space-x-4">
-              <a href="#" class="text-gray-400 hover:text-white transition-colors">Instagram</a>
-              <a href="#" class="text-gray-400 hover:text-white transition-colors">Facebook</a>
-              <a href="#" class="text-gray-400 hover:text-white transition-colors">WhatsApp</a>
+    <footer class="bg-primary text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p class="mb-2">Aleeza Beauty Parlour, near Shoba City, Puzhakkal, Thrissur, Kerala 680553</p>
+            <p class="mb-2">Phone: +91 83019 69522 | Email: aleezabeautymakeoverstudio@gmail.com</p>
+            <a href="https://maps.app.goo.gl/6D6tR15zghUTjytV7" target="_blank" class="inline-block bg-gold text-primary px-4 py-2 rounded-lg font-semibold hover:bg-opacity-90 transition mb-4">Get Directions</a>
+            <div class="mt-4 flex justify-center space-x-6">
+                <a href="https://www.instagram.com/_aleeza_beauty/?__pwa=1#" target="_blank" class="text-white hover:text-gold transition">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                </a>
+                <a href="https://www.facebook.com/profile.php?id=100064938013580" target="_blank" class="text-white hover:text-gold transition">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                </a>
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=aleezabeautymakeoverstudio@gmail.com" target="_blank" class="text-white hover:text-gold transition">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                </a>
             </div>
-          </div>
+            <p class="mt-4 text-sm">&copy; 2024 Aleeza Beauty Makeover Studio. All rights reserved.</p>
+            <p class="mt-2 text-xs"><a href="https://www.instagram.com/_.d3z_fx._/?__pwa=1#" target="_blank" class="text-gold hover:text-white">site deployed by D3ZTUDIOtm</a></p>
         </div>
-        <div class="border-t border-gray-700 mt-8 pt-8 text-center">
-          <p class="text-gray-400">&copy; 2023 Aleeza Beauty Makeover Studio. All rights reserved.</p>
-        </div>
-      </div>
     </footer>
 
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox fixed inset-0 bg-black bg-opacity-90 z-50 items-center justify-center">
+        <img id="lightbox-img" src="" alt="" class="max-w-full max-h-full">
+        <button id="lightbox-close" class="absolute top-4 right-4 text-white text-2xl">&times;</button>
+        <button id="lightbox-prev" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-2xl">&larr;</button>
+        <button id="lightbox-next" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-2xl">&rarr;</button>
+    </div>
+
+    <!-- Sign In Modal -->
+    <div id="signin-modal" class="signin-modal fixed inset-0 bg-black bg-opacity-50 z-50 items-center justify-center">
+        <div class="bg-white p-8 rounded-lg max-w-md w-full mx-4">
+            <h2 class="text-2xl font-bold mb-4 text-center">Sign In to Continue</h2>
+            <button id="google-signin" class="w-full bg-red-500 text-white py-2 px-4 rounded mb-4 hover:bg-red-600">Sign In with Google</button>
+            <div class="mb-4">
+                <input type="email" id="email" placeholder="Email" class="w-full p-2 border rounded mb-2">
+                <input type="password" id="password" placeholder="Password" class="w-full p-2 border rounded mb-2">
+                <button id="email-signin" class="w-full bg-primary text-white py-2 px-4 rounded mb-2 hover:bg-opacity-90">Sign In</button>
+                <button id="email-signup" class="w-full bg-gold text-black py-2 px-4 rounded hover:bg-opacity-90">Sign Up</button>
+            </div>
+            <button id="close-modal" class="absolute top-2 right-2 text-gray-500">&times;</button>
+        </div>
+    </div>
+
+
     <script>
-      // Initialize AOS
-      AOS.init();
-
-      // Navbar scroll effect
-      window.addEventListener('scroll', function() {
-        const nav = document.querySelector('nav');
-        if (window.scrollY > 50) {
-          nav.classList.add('bg-white/90', 'backdrop-blur-md', 'shadow-lg');
-        } else {
-          nav.classList.remove('bg-white/90', 'backdrop-blur-md', 'shadow-lg');
+        // Custom Tailwind colors
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#3c0c31',
+                        'gold': '#D4AF37',
+                        'dark-gold': '#B8860B',
+                        'white': '#FFFFFF'
+                    }
+                }
+            }
         }
-      });
 
-      // Side menu toggle
-      const menuBtn = document.getElementById('menu-btn');
-      const sideMenu = document.getElementById('side-menu');
-      const closeMenu = document.getElementById('close-menu');
 
-      menuBtn.addEventListener('click', () => {
-        sideMenu.classList.toggle('-translate-y-full');
-      });
+        // Letter animation for title
+        const titleTextSpan = document.getElementById('title-text');
+        const titleText = "ALEEZA BEAUTY MAKEOVER STUDIO";
+        titleTextSpan.innerHTML = titleText.split('').map((letter, index) =>
+            letter === '\n' ? '<br>' : `<span class="letter" style="animation-delay: ${index * 0.1}s">${letter === ' ' ? '&nbsp;' : letter}</span>`
+        ).join('');
 
-      closeMenu.addEventListener('click', () => {
-        sideMenu.classList.add('-translate-y-full');
-      });
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 100) {
+                header.classList.add('bg-primary', 'bg-opacity-90', 'shadow-lg');
+                header.classList.remove('bg-transparent');
+            } else {
+                header.classList.remove('bg-primary', 'bg-opacity-90', 'shadow-lg');
+                header.classList.add('bg-transparent');
+            }
+        });
 
-      // Scroll to section
-      function scrollToSection(id) {
-        document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-        sideMenu.classList.add('-translate-y-full');
-      }
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileNav = document.getElementById('mobile-nav');
+        const overlay = document.getElementById('overlay');
+        const hamburger = document.querySelector('.hamburger');
 
-      // Testimonials carousel
-      const testimonials = [
-        { name: 'Sarah J.', image: 'https://via.placeholder.com/100?text=S', review: 'Amazing experience! The team made me feel beautiful and confident for my wedding day.' },
-        { name: 'Emily R.', image: 'https://via.placeholder.com/100?text=E', review: 'The facials are incredible. My skin has never looked better!' },
-        { name: 'Lisa M.', image: 'https://via.placeholder.com/100?text=L', review: 'Professional service and stunning results. Highly recommend!' },
-        { name: 'Anna K.', image: 'https://via.placeholder.com/100?text=A', review: 'The bridal makeover was perfect. I felt like a princess!' }
-      ];
+        menuToggle.addEventListener('click', () => {
+            mobileNav.classList.toggle('show');
+            overlay.classList.toggle('show');
+            hamburger.classList.toggle('open');
+        });
 
-      let currentTestimonial = 0;
-      const testimonialContainer = document.getElementById('testimonial-container');
+        overlay.addEventListener('click', () => {
+            mobileNav.classList.remove('show');
+            overlay.classList.remove('show');
+            hamburger.classList.remove('open');
+        });
 
-      function updateTestimonial() {
-        const t = testimonials[currentTestimonial];
-        testimonialContainer.innerHTML = `
-          <img src="${t.image}" alt="${t.name}" class="w-16 h-16 rounded-full mx-auto mb-4" />
-          <p class="text-lg text-gray-600 mb-4">"${t.review}"</p>
-          <p class="font-semibold text-rose-600">${t.name}</p>
-        `;
-      }
+        mobileNav.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A') {
+                mobileNav.classList.remove('show');
+                overlay.classList.remove('show');
+                hamburger.classList.remove('open');
+            }
+        });
 
-      document.getElementById('next-testimonial').addEventListener('click', () => {
-        currentTestimonial = (currentTestimonial + 1) % testimonials.length;
-        updateTestimonial();
-      });
+        // Click outside to close
+        document.addEventListener('click', (e) => {
+            if (!mobileNav.contains(e.target) && !menuToggle.contains(e.target) && mobileNav.classList.contains('show')) {
+                mobileNav.classList.remove('show');
+                overlay.classList.remove('show');
+                hamburger.classList.remove('open');
+            }
+        });
 
-      document.getElementById('prev-testimonial').addEventListener('click', () => {
-        currentTestimonial = (currentTestimonial - 1 + testimonials.length) % testimonials.length;
-        updateTestimonial();
-      });
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
 
-      // Form submit
-      document.getElementById('booking-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        alert('Booking submitted!');
-        this.reset();
-      });
+        // Scroll reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Gallery lightbox
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        let currentIndex = 0;
+
+        galleryItems.forEach((item, index) => {
+            item.addEventListener('click', () => {
+                if (item.classList.contains('before-after')) return;
+                currentIndex = index;
+                lightboxImg.src = item.dataset.src;
+                lightbox.classList.add('show');
+            });
+        });
+
+        document.getElementById('lightbox-close').addEventListener('click', () => {
+            lightbox.classList.remove('show');
+        });
+
+        document.getElementById('lightbox-prev').addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+            lightboxImg.src = galleryItems[currentIndex].dataset.src;
+        });
+
+        document.getElementById('lightbox-next').addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % galleryItems.length;
+            lightboxImg.src = galleryItems[currentIndex].dataset.src;
+        });
+
+        // Before/After slider
+        const beforeAfter = document.querySelector('.before-after');
+        const slider = beforeAfter.querySelector('.slider');
+        let isDragging = false;
+
+        slider.addEventListener('mousedown', () => isDragging = true);
+        document.addEventListener('mouseup', () => isDragging = false);
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const rect = beforeAfter.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const percentage = (x / rect.width) * 100;
+            slider.style.left = `${Math.max(0, Math.min(100, percentage))}%`;
+            beforeAfter.querySelector('.after').style.width = `${Math.max(0, Math.min(100, percentage))}%`;
+        });
+
+        // Contact Form submission
+        document.getElementById('contactForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const submitBtn = document.getElementById('contactSubmitBtn');
+            const modal = document.getElementById('contactSuccessModal');
+            const whatsappBtn = document.getElementById('contactWhatsappBtn');
+            const closeModal = document.getElementById('contactCloseModal');
+
+            // Custom validation
+            const name = form.name.value.trim();
+            const email = form.email.value.trim();
+            const phone = form.phone.value.trim();
+            const address = form.address.value.trim();
+            const service = form.service.value;
+            const message = form.message.value.trim();
+
+            if (!name || !email || !phone || !address || !service) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            // Validate email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+
+            // Ensure phone starts with +91
+            let fullPhone = phone;
+            if (!fullPhone.startsWith('+91')) {
+                fullPhone = '+91' + fullPhone.replace(/^\+91/, '');
+            }
+
+            // Prepare data
+            const data = {
+                name,
+                email,
+                phone: fullPhone,
+                address,
+                service,
+                message
+            };
+
+            try {
+                  // Prepare WhatsApp message
+                  const whatsappMessage = `Hello Aleeza Studio, I have an inquiry.\n\nName: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone}\nAddress: ${data.address}\nService Interest: ${data.service}\nMessage: ${data.message}`;
+                  const whatsappUrl = `https://wa.me/918301969522?text=${encodeURIComponent(whatsappMessage)}`;
+
+                  // Navigate to WhatsApp
+                  window.location.href = whatsappUrl;
+
+                  // Reset form
+                  form.reset();
+
+              } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            }
+        });
+
+        // Auth
+        const signinModal = document.getElementById('signin-modal');
+        const googleSigninBtn = document.getElementById('google-signin');
+        const emailSigninBtn = document.getElementById('email-signin');
+        const emailSignupBtn = document.getElementById('email-signup');
+        const closeModalBtn = document.getElementById('close-modal');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+
+        let userLoggedIn = false;
+
+        // Auth state listener
+        window.onAuthStateChanged(window.auth, (user) => {
+            if (user) {
+                userLoggedIn = true;
+                signinModal.classList.remove('show');
+                showUserAvatar(user);
+                // Auto-fill contact form
+                const nameInput = document.querySelector('input[placeholder="Name"]');
+                const emailInput = document.querySelector('input[placeholder="Email"]');
+                if (nameInput && user.displayName) nameInput.value = user.displayName;
+                if (emailInput && user.email) emailInput.value = user.email;
+            } else {
+                userLoggedIn = false;
+                hideUserAvatar();
+            }
+        });
+
+        // Show sign-in modal after 10 seconds if not logged in
+        setTimeout(() => {
+            if (!userLoggedIn) {
+                signinModal.classList.add('show');
+            }
+        }, 10000);
+
+        // Scroll to services
+        const servicesSection = document.getElementById('services');
+        const servicesObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !userLoggedIn) {
+                    signinModal.classList.add('show');
+                }
+            });
+        });
+        servicesObserver.observe(servicesSection);
+
+        // Google sign in
+        googleSigninBtn.addEventListener('click', async () => {
+            const provider = new window.GoogleAuthProvider();
+            try {
+                await window.signInWithPopup(window.auth, provider);
+            } catch (error) {
+                alert('Error signing in with Google: ' + error.message);
+            }
+        });
+
+        // Email sign in
+        emailSigninBtn.addEventListener('click', async () => {
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            try {
+                await window.signInWithEmailAndPassword(window.auth, email, password);
+            } catch (error) {
+                alert('Error signing in: ' + error.message);
+            }
+        });
+
+        // Email sign up
+        emailSignupBtn.addEventListener('click', async () => {
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            try {
+                await window.createUserWithEmailAndPassword(window.auth, email, password);
+            } catch (error) {
+                alert('Error signing up: ' + error.message);
+            }
+        });
+
+        // Close modal
+        closeModalBtn.addEventListener('click', () => {
+            signinModal.classList.remove('show');
+        });
+
+        // User avatar
+        function showUserAvatar(user) {
+            const avatar = document.createElement('div');
+            avatar.id = 'user-avatar';
+            avatar.className = 'w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white cursor-pointer ml-4';
+            avatar.innerHTML = user.photoURL ? `<img src="${user.photoURL}" class="w-full h-full rounded-full">` : user.email.charAt(0).toUpperCase();
+            avatar.addEventListener('click', showUserMenu);
+            document.querySelector('header .container').appendChild(avatar);
+        }
+
+        function hideUserAvatar() {
+            const avatar = document.getElementById('user-avatar');
+            if (avatar) avatar.remove();
+        }
+
+        function showUserMenu() {
+            const menu = document.createElement('div');
+            menu.id = 'user-menu';
+            menu.className = 'absolute top-12 right-4 bg-white shadow-lg rounded p-2';
+            menu.innerHTML = '<button id="logout-btn" class="text-black">Logout</button>';
+            document.body.appendChild(menu);
+            document.getElementById('logout-btn').addEventListener('click', async () => {
+                await window.signOut(window.auth);
+                menu.remove();
+            });
+            // Close on click outside
+            document.addEventListener('click', (e) => {
+                if (!menu.contains(e.target) && e.target.id !== 'user-avatar') {
+                    menu.remove();
+                }
+            });
+        }
     </script>
-  </body>
+    <script src="gallery.js"></script>
+</body>
 </html>
