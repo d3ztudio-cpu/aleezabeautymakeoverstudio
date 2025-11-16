@@ -7,6 +7,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="style.css">
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
@@ -210,7 +212,7 @@
     <!-- Header -->
     <header id="header" class="fixed top-0 w-full bg-transparent backdrop-blur-md z-50 transition-all duration-300">
         <div class="container mx-auto px-6 py-6 flex justify-between items-center">
-            <a href="#home" class="text-2xl font-bold text-white" style="white-space: nowrap;">ALEEZA BEAUTY<br>MAKEOVER STUDIO</a>
+            <a href="#home" class="text-lg font-bold text-white" style="white-space: nowrap;">ALEEZA BEAUTY MAKEOVER STUDIO</a>
             <nav class="hidden md:flex space-x-8">
                 <a href="#home" class="text-white hover:text-primary transition">Home</a>
                 <a href="#about" class="text-white hover:text-primary transition">About</a>
@@ -262,7 +264,7 @@
                         <p class="text-white text-center font-bold">SHYMI THOMAS<br>OWNER OF ALEEZA BEAUTY MAKE OVER STUDIO</p>
                     </div>
                 </div>
-                <div>
+                <div class="text-justify">
                     <h2 class="text-4xl font-bold text-primary mb-8">About Aleeza</h2>
                     <p class="text-lg mb-6 leading-relaxed">Aleeza Beauty Makeover Studio was founded by Mrs. Shymi Thomas on 23 January 2019 with a vision to bring joy, confidence, and elegance to every individual who walks through the door. The studio was inaugurated by her mother and blessed by Rev. Fr. Shaji Kochupurakkal, the former Vicar of Mount Carmel Church, Mundur.</p>
                     <p class="text-lg mb-6 leading-relaxed">The name Aleeza, meaning joyful, beautifully reflects the spirit of our studio—where every service is delivered with passion, warmth, and a commitment to enhancing natural beauty.</p>
@@ -503,29 +505,8 @@
     <section id="gallery" class="py-20 bg-white">
         <div class="container mx-auto px-4">
             <h2 class="text-4xl font-bold text-center text-primary mb-12">Gallery</h2>
-            <div class="columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4">
-                <div class="break-inside-avoid gallery-item cursor-pointer" data-src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80">
-                    <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Makeup 1" class="w-full rounded-lg hover:scale-105 transition">
-                </div>
-                <div class="break-inside-avoid gallery-item cursor-pointer" data-src="https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80">
-                    <img src="https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Makeup 2" class="w-full rounded-lg hover:scale-105 transition">
-                </div>
-                <div class="break-inside-avoid before-after cursor-pointer" data-src="before-after">
-                    <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Before" class="w-full rounded-lg">
-                    <div class="after">
-                        <img src="https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="After" class="w-full rounded-lg">
-                    </div>
-                    <div class="slider"></div>
-                </div>
-                <div class="break-inside-avoid gallery-item cursor-pointer" data-src="https://images.unsplash.com/photo-1582095133179-bfd08e2fc6b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80">
-                    <img src="https://images.unsplash.com/photo-1582095133179-bfd08e2fc6b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Makeup 3" class="w-full rounded-lg hover:scale-105 transition">
-                </div>
-                <div class="break-inside-avoid gallery-item cursor-pointer" data-src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80">
-                    <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Makeup 4" class="w-full rounded-lg hover:scale-105 transition">
-                </div>
-                <div class="break-inside-avoid gallery-item cursor-pointer" data-src="https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80">
-                    <img src="https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Makeup 5" class="w-full rounded-lg hover:scale-105 transition">
-                </div>
+            <div id="gallery-container" class="gallery-container">
+                <!-- Images will be dynamically loaded here -->
             </div>
         </div>
     </section>
@@ -647,7 +628,7 @@
 
         // Letter animation for title
         const titleTextSpan = document.getElementById('title-text');
-        const titleText = "ALEEZA BEAUTY\nMAKEOVER STUDIO";
+        const titleText = "ALEEZA BEAUTY MAKEOVER STUDIO";
         titleTextSpan.innerHTML = titleText.split('').map((letter, index) =>
             letter === '\n' ? '<br>' : `<span class="letter" style="animation-delay: ${index * 0.1}s">${letter === ' ' ? '&nbsp;' : letter}</span>`
         ).join('');
@@ -943,5 +924,6 @@
             });
         }
     </script>
+    <script src="gallery.js"></script>
 </body>
 </html>
