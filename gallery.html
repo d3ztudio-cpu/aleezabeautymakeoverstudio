@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto-Scrolling Gallery</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="gallery" class="gallery"></div>
+    <div id="modal" class="modal">
+        <div class="modal-overlay" onclick="closeModal()"></div>
+        <div class="modal-content">
+            <img id="modal-image" src="" alt="Full size image">
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="script.js"></script>
+</body>
+</html>

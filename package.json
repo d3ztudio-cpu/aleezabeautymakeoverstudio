@@ -7,27 +7,14 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "deploy": "gh-pages -d dist"
+    "preview": "vite preview"
   },
-  "dependencies": {
-    "@supabase/supabase-js": "^2.81.1",
-    "aos": "^2.3.4",
-    "framer-motion": "^12.23.24",
-    "react": "^19.2.0",
-    "react-datepicker": "^8.9.0",
-    "react-dom": "^19.2.0",
-    "yet-another-react-lightbox": "^3.25.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@eslint/js": "^9.39.1",
-    "@types/react": "^19.2.2",
-    "@types/react-dom": "^19.2.2",
-    "@vitejs/plugin-react": "^5.1.0",
+    "@tailwindcss/vite": "^4.1.17",
     "autoprefixer": "^10.4.22",
     "eslint": "^9.39.1",
-    "eslint-plugin-react-hooks": "^7.0.1",
-    "eslint-plugin-react-refresh": "^0.4.24",
     "gh-pages": "^6.3.0",
     "globals": "^16.5.0",
     "postcss": "^8.5.6",

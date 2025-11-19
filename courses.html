@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses - ALEEZA BEAUTY MAKEOVER STUDIO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style type="text/css">
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #3c0c31; /* bg-primary */
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        /* --- Mobile Menu --- */
+        .hamburger .line {
+            width: 30px; 
+            height: 3px; 
+            background-color: white; 
+            margin: 6px 0; 
+            transition: all 0.3s ease;
+        }
+        .hamburger.open .line:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+        .hamburger.open .line:nth-child(2) { opacity: 0; }
+        .hamburger.open .line:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+
+        .mobile-nav {
+            position: fixed; 
+            top: 84px; /* UPDATED: 5.25rem to match new header height */
+            right: -100%; 
+            width: 100%; 
+            height: calc(100vh - 84px);
+            background-color: rgba(60, 12, 49, 0.95); 
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: right 0.4s ease-in-out;
+            overflow-y: auto;
+            z-index: 45; 
+        }
+        .mobile-nav.show { 
+            right: 0; 
+        }
+
+        .overlay {
+            position: fixed; 
+            inset: 0; 
+            background-color: rgba(0, 0, 0, 0.5);
+            opacity: 0; 
+            visibility: hidden; 
+            transition: opacity 0.4s ease, visibility 0.4s;
+            z-index: 40; 
+        }
+        .overlay.show { 
+            opacity: 1; 
+            visibility: visible; 
+        }
+
+        /* --- Page Sections --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px) scale(0.98);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .course-card {
+            background-color: rgba(212, 175, 55, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        .course-card:hover {
+            background-color: rgba(212, 175, 55, 0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        /* UPDATED: NEW Title Line Animation (Mobile First) */
+        .title-animated-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Allow stacking on mobile */
+            flex-wrap: wrap; 
+            width: 100%;
+        }
+        .title-animated-container .title-line {
+            height: 2px;
+            background-color: #D4AF37;
+            width: 80px; /* Fixed short width for mobile */
+            margin: 0 0.5em;
+            transition: width 0.4s ease;
+        }
+        .title-animated-container .title-text {
+            /* Text will wrap on its own */
+            width: 100%;
+            padding: 0.5em 0; /* Space between lines and text */
+            order: -1; /* Puts text on top */
+            flex-shrink: 0; 
+            font-size: 1.875rem; /* text-3xl for mobile */
+            text-align: center; 
+        }
+        
+        /* Desktop styles for title lines */
+        @media (min-width: 768px) {
+            .title-animated-container {
+                flex-wrap: nowrap; /* Go back to single line */
+            }
+             .title-animated-container .title-line {
+                flex-grow: 1; /* Allow stretching */
+                max-width: 120px; 
+                width: 100%;
+             }
+             .title-animated-container:hover .title-line {
+                max-width: 200px; /* Grow on hover */
+            }
+             .title-animated-container .title-text {
+                font-size: 2.25rem; /* text-4xl for desktop */
+                padding: 0 1em;
+                order: 0; /* Put text back in the middle */
+                width: auto; /* Let it be its natural width */
+            }
+        }
+        
+        /* UPDATED: Responsive title for hero section */
+        .page-hero-title {
+            font-size: clamp(2rem, 10vw, 4.5rem);
+            line-height: 1.2;
+            overflow-wrap: break-word;
+            word-wrap: break-word; /* Allow wrapping */
+            text-align: center;
+        }
+
+        /* UPDATED: Logo styling (Circular) */
+        .header-logo {
+            border: 2px solid white; /* White border */
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.7), /* White glow */
+                        0 0 20px rgba(255, 255, 255, 0.5); /* Wider glow */
+            border-radius: 50%; /* UPDATED to circular */
+        }
+        
+        /* NEW: Button Shine Animation */
+        .btn-shine {
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            /* Ensure other button styles are compatible */
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .btn-shine:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+        }
+        /* Golden shine pseudo-element */
+        .btn-shine::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.6s ease;
+            transform: skewX(-25deg); /* Slant the shine */
+        }
+        .btn-shine:hover::after {
+            left: 150%;
+        }
+        /* Specific override for the form button to be full width */
+        #enrollBtn {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-primary text-gold">
+    <!-- Header --><header id="header" class="fixed top-0 w-full bg-primary bg-opacity-90 shadow-lg z-50 transition-all duration-300">
+        <!-- UPDATED: Fixed mobile header layout -->
+        <div class="w-full px-4 py-4 flex justify-between items-center"> <!-- py-4 is smaller, px-4 is smaller -->
+            <a href="index.html#home">
+                <img src="https://eaamxtitxrsteidkmskl.supabase.co/storage/v1/object/public/Images/LOGO.png" alt="Aleeza Beauty Logo" class="h-14 w-14 object-cover header-logo"> <!-- UPDATED: Made dimensions square for circle -->
+            </a>
+            <nav class="hidden md:flex space-x-8">
+                <a href="index.html#home" class="text-white hover:text-primary transition">Home</a>
+                <a href="index.html#about" class="text-white hover:text-primary transition">About</a>
+                <a href="index.html#services" class="text-white hover:text-primary transition">Services</a>
+                <a href="courses.html" class="text-white hover:text-primary transition">Courses</a>
+                <a href="index.html#gallery" class="text-white hover:text-primary transition">Gallery</a>
+                <a href="index.html#contact" class="text-white hover:text-primary transition">Contact</a>
+            </nav>
+            <button class="md:hidden text-white" id="menu-toggle" aria-label="Open menu">
+                <div class="hamburger">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+            </button>
+        </div>
+        <nav class="mobile-nav md:hidden" id="mobile-nav">
+            <div class="px-6 py-8 space-y-6">
+                <a href="index.html#home" class="block text-white hover:text-gold hover:bg-gold hover:bg-opacity-10 px-4 py-3 rounded-lg transition-all duration-300 font-semibold">Home</a>
+                <a href="index.html#about" class="block text-white hover:text-gold hover:bg-gold hover:bg-opacity-10 px-4 py-3 rounded-lg transition-all duration-300 font-semibold">About</a>
+                <a href="index.html#services" class="block text-white hover:text-gold hover:bg-gold hover:bg-opacity-10 px-4 py-3 rounded-lg transition-all duration-300 font-semibold">Services</a>
+                <a href="courses.html" class="block text-white hover:text-gold hover:bg-gold hover:bg-opacity-10 px-4 py-3 rounded-lg transition-all duration-300 font-semibold">Courses</a>
+                <a href="index.html#gallery" class="block text-white hover:text-gold hover:bg-gold hover:bg-opacity-10 px-4 py-3 rounded-lg transition-all duration-300 font-semibold">Gallery</a>
+                <a href="index.html#contact" class="block text-white hover:text-gold hover:bg-gold hover:bg-opacity-10 px-4 py-3 rounded-lg transition-all duration-300 font-semibold">Contact</a>
+                <a href="https://wa.me/7034692274" target="_blank" class="block text-white hover:text-gold hover:bg-gold hover:bg-opacity-10 px-4 py-3 rounded-lg transition-all duration-300 font-semibold">Help and Support</a>
+            </div>
+        </nav>
+        <div id="overlay" class="overlay"></div>
+    </header>
+
+    <!-- Page Title Section --><section class="relative pt-40 pb-20 flex items-center justify-center text-center text-white overflow-hidden">
+        <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://i.postimg.cc/hPLySwyT/bg.jpg'); background-position: center top;"></div>
+        <div class="absolute inset-0 bg-black bg-opacity-60"></div>
+        <div class="relative z-10 px-4">
+            <!-- UPDATED: New Title Structure -->
+            <div class="title-animated-container mb-6">
+                <span class="title-line"></span>
+                <h1 class="title-text font-bold uppercase page-hero-title">Courses & Enrollment</h1>
+                <span class="title-line"></span>
+            </div>
+            <p class="text-lg sm:text-xl md:text-2xl mb-8 leading-relaxed">Start your journey in the beauty industry with Aleeza Beauty Makeover Studio.</p>
+        </div>
+    </section>
+
+    <!-- Courses Section --><section id="courses" class="py-20 bg-primary">
+        <div class="container mx-auto px-4">
+            <!-- UPDATED: New Title Structure -->
+            <div class="title-animated-container mb-12">
+                <span class="title-line"></span>
+                <h2 class="title-text font-bold text-gold uppercase">Makeup Courses Offered</h2>
+                <span class="title-line"></span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-white">
+                <div class="course-card reveal">
+                    <h3 class="text-2xl font-semibold mb-4">Hair Styling</h3>
+                    <p>Master everything from bridal updos and intricate braids to modern cuts and runway-ready styles. This course covers techniques for all hair types and lengths.</p>
+                    <div class="mt-4">
+                        <!-- UPDATED: Added button styling -->
+                        <a href="#enrollment" class="btn-shine bg-gold text-primary py-2 px-4 rounded-lg font-semibold text-sm">Enroll Now</a>
+                    </div>
+                </div>
+                <div class="course-card reveal">
+                    <h3 class="text-2xl font-semibold mb-4">Saree Draping</h3>
+                    <p>Learn the art of draping sarees for any occasion. This course covers multiple regional styles, from classic Nivi to modern lehenga drapes, ensuring a perfect, elegant fall every time.</p>
+                    <div class="mt-4">
+                        <!-- UPDATED: Added button styling -->
+                        <a href="#enrollment" class="btn-shine bg-gold text-primary py-2 px-4 rounded-lg font-semibold text-sm">Enroll Now</a>
+                    </div>
+                </div>
+                <div class="course-card reveal">
+                    <h3 class="text-2xl font-semibold mb-4">Flower Setting</h3>
+                    <p>Discover how to create stunning hair adornments. This course teaches traditional and contemporary techniques for setting fresh and artificial flowers in bridal and fashion hairstyles.</p>
+                    <div class="mt-4">
+                        <!-- UPDATED: Added button styling -->
+                        <a href="#enrollment" class="btn-shine bg-gold text-primary py-2 px-4 rounded-lg font-semibold text-sm">Enroll Now</a>
+                    </div>
+                </div>
+                <div class="course-card reveal">
+                    <h3 class="text-2xl font-semibold mb-4">Jewellery Setting</h3>
+                    <p>A crucial skill for any bridal artist. Learn how to securely and beautifully set maang tikkas, matha pattis, nose rings, and other bridal jewellery to complete the perfect look.</p>
+                    <div class="mt-4">
+                        <!-- UPDATED: Added button styling -->
+                        <a href="#enrollment" class="btn-shine bg-gold text-primary py-2 px-4 rounded-lg font-semibold text-sm">Enroll Now</a>
+                    </div>
+                </div>
+                <div class="course-card reveal">
+                    <h3 class="text-2xl font-semibold mb-4">Hair Colouring</h3>
+                    <p>From fundamentals to advanced trends. This course covers color theory, foiling techniques, balayage, ombre, and full-head color transformations with professional-grade products.</p>
+                    <div class="mt-4">
+                        <!-- UPDATED: Added button styling -->
+                        <a href="#enrollment" class="btn-shine bg-gold text-primary py-2 px-4 rounded-lg font-semibold text-sm">Enroll Now</a>
+                    </div>
+                </div>
+                 <!-- You can add more course cards here if needed -->
+                 <div class="course-card reveal md:col-span-1 lg:col-span-1">
+                    <h3 class="text-2xl font-semibold mb-4">More Courses</h3>
+                    <p>Contact us to learn about our full range of courses, including personal grooming and advanced bridal makeup.</p>
+                    <div class="mt-4">
+                        <!-- UPDATED: Added button styling -->
+                        <a href="#enrollment" class="btn-shine bg-gold text-primary py-2 px-4 rounded-lg font-semibold text-sm">Enroll Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Course Enrollment Section --><section id="enrollment" class="py-20 bg-primary text-white">
+        <div class="container mx-auto px-4">
+            <!-- UPDATED: New Title Structure -->
+            <div class="title-animated-container mb-12">
+                <span class="title-line"></span>
+                <h2 class="title-text font-bold text-gold uppercase">Course Enrollment</h2>
+                <span class="title-line"></span>
+            </div>
+            <div class="max-w-2xl mx-auto reveal">
+                <form id="enrollmentForm" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <input type="text" name="name" placeholder="Full Name" required class="w-full p-3 rounded-lg bg-black bg-opacity-10 border border-white border-opacity-20 focus:outline-none focus:border-gold text-white">
+                        <input type="email" name="email" placeholder="Email" required class="w-full p-3 rounded-lg bg-black bg-opacity-10 border border-white border-opacity-20 focus:outline-none focus:border-gold text-white">
+                    </div>
+                    <input type="tel" name="phone" placeholder="+91 Phone Number" required class="w-full p-3 rounded-lg bg-black bg-opacity-10 border border-white border-opacity-20 focus:outline-none focus:border-gold text-white">
+                    <input type="text" name="address" placeholder="Address" required class="w-full p-3 rounded-lg bg-black bg-opacity-10 border border-white border-opacity-20 focus:outline-none focus:border-gold text-white">
+                    <select name="course" required class="w-full p-3 rounded-lg bg-primary border border-gold border-opacity-50 shadow-xl focus:outline-none focus:border-gold focus:shadow-2xl text-white">
+                        <option value="">Please select a course...</option>
+                        <option>Hair Styling</option>
+                        <option>Saree Draping</option>
+                        <option>Flower Setting</option>
+                        <option>Jewellery Setting</option>
+                        <option>Hair Colouring</option>
+                        <option>Other (Please specify in message)</option>
+                    </select>
+                    <select name="experience" required class="w-full p-3 rounded-lg bg-primary border border-gold border-opacity-50 shadow-xl focus:outline-none focus:border-gold focus:shadow-2xl text-white">
+                        <option value="">Please select your level...</option>
+                        <option>Beginner (No Experience)</option>
+                        <option>Intermediate</option>
+                        <option>Advanced (Professional)</option>
+                    </select>
+                    <textarea name="message" placeholder="Additional Message (Optional)" rows="4" class="w-full p-3 rounded-lg bg-black bg-opacity-10 border border-white border-opacity-20 focus:outline-none focus:border-gold text-white"></textarea>
+                    <!-- UPDATED: Added btn-shine class and changed color -->
+                    <button type="submit" id="enrollBtn" class="w-full bg-gold text-primary py-3 rounded-lg font-semibold hover:bg-opacity-90 btn-shine">Enroll Now</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- UPDATED: Footer with new Map Link --><footer class="bg-primary text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p class="mb-4">Aleeza Beauty Parlour, near Shoba City, Puzhakkal, Thrissur, Kerala 680553</p>
+            <p class="mb-4">Phone: +91 83019 69522 | Email: aleezabeautymakeoverstudio@gmail.com</p>
+            
+            <!-- Embedded Google Map -->
+            <div class="w-full max-w-lg mx-auto my-6">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2008.234328329618!2d76.17658702330894!3d10.547040402094833!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba7ed95f2932aa3%3A0x2008339488034802!2sAleeza%20Beauty%20Make%20Over%20Studio!5e0!3m2!1sen!2sin!4v1731821894101!5m2!1sen!2sin" class="w-full h-64 rounded-lg border-2 border-gold" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+
+            <!-- UPDATED: Get Directions Button link & btn-shine class -->
+            <a href="https://maps.app.goo.gl/mRZBkorbWgK4xGfo9" target="_blank" class="inline-block bg-gold text-primary px-4 py-2 rounded-lg font-semibold hover:bg-opacity-90 transition mb-4 btn-shine">Get Directions</a>
+            
+            <div class="mt-8 flex justify-center space-x-6">
+                <a href="https://www.instagram.com/_aleeza_beauty/?__pwa=1#" target="_blank" class="text-white hover:text-gold transition" aria-label="Instagram">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                </a>
+                <a href="https://www.facebook.com/profile.php?id=100064938013580" target="_blank" class="text-white hover:text-gold transition" aria-label="Facebook">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                </a>
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=aleezabeautymakeoverstudio@gmail.com" target="_blank" class="text-white hover:text-gold transition" aria-label="Email">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                </a>
+            </div>
+            <p class="mt-4 text-sm">© 2025 Aleeza Beauty Makeover Studio. All rights reserved.</p>
+            <p class="mt-2 text-xs"><a href="https://www.instagram.com/_.d3z_fx._/?__pwa=1#" target="_blank" class="text-gold hover:text-white">MADE AND DEPLOYED BY D3ZTUDIO</a></p>
+        </div>
+    </footer>
+
+
+    <script>
+        // --- Tailwind Config ---
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#3c0c31',
+                        'gold': '#D4AF37',
+                        'dark-gold': '#B8860B',
+                        'white': '#FFFFFF'
+                    }
+                }
+            }
+        }
+
+        // --- Mobile menu toggle ---
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileNav = document.getElementById('mobile-nav');
+        const overlay = document.getElementById('overlay');
+        const hamburger = document.querySelector('.hamburger');
+        const header = document.getElementById('header');
+
+
+        menuToggle.addEventListener('click', () => {
+            // Set top position just before showing
+            mobileNav.style.top = header.offsetHeight + 'px';
+            mobileNav.classList.toggle('show');
+            overlay.classList.toggle('show');
+            hamburger.classList.toggle('open');
+        });
+
+        overlay.addEventListener('click', () => {
+            mobileNav.classList.remove('show');
+            overlay.classList.remove('show');
+            hamburger.classList.remove('open');
+        });
+
+        mobileNav.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A') {
+                mobileNav.classList.remove('show');
+                overlay.classList.remove('show');
+                hamburger.classList.remove('open');
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!mobileNav.contains(e.target) && !menuToggle.contains(e.target) && mobileNav.classList.contains('show')) {
+                mobileNav.classList.remove('show');
+                overlay.classList.remove('show');
+                hamburger.classList.remove('open');
+            }
+        });
+
+        // --- Smooth scrolling (for on-page links like 'Enroll Now') ---
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetElement = document.querySelector(this.getAttribute('href'));
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // --- Scroll reveal ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+
+        // --- Enrollment Form submission ---
+        document.getElementById('enrollmentForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const submitBtn = document.getElementById('enrollBtn');
+
+            const name = form.name.value.trim();
+            const email = form.email.value.trim();
+            const phone = form.phone.value.trim();
+            const address = form.address.value.trim();
+            const course = form.course.value;
+            const experience = form.experience.value;
+
+            if (!name || !email || !phone || !address || !course || !experience) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+
+            let fullPhone = phone;
+            if (!fullPhone.startsWith('+91')) {
+                fullPhone = '+91' + fullPhone.replace(/^\+91/, '');
+            }
+
+            submitBtn.disabled = true;
+
+            const data = {
+                name, email, phone: fullPhone, address, course, experience,
+                message: form.message.value.trim() || ''
+            };
+
+            try {
+                const whatsappMessage = `Hello Aleeza Studio, I'm interested in enrolling.\n\nName: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone}\nAddress: ${data.address}\nCourse: ${data.course}\nExperience: ${data.experience}\nMessage: ${data.message}`;
+                const whatsappUrl = `https://wa.me/918301969522?text=${encodeURIComponent(whatsappMessage)}`;
+                
+                window.location.href = whatsappUrl;
+                form.reset();
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+                submitBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,16 +1,1272 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Aleeza Beauty Makeover Studio</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- UPDATED: SEO Meta Tags -->
+    <title>ALEEZA BEAUTY MAKEOVER STUDIO - Thrissur</title>
+    <meta name="description" content="Welcome to Aleeza Beauty Makeover Studio in Thrissur. Expert bridal makeup, hairstyling, facials, and professional beauty courses. Book your appointment today.">
+    <meta name="keywords" content="aleeza beauty makeover studio, beauty parlour thrissur, bridal makeup thrissur, makeup artist thrissur, shymi thomas makeup, beauty courses thrissur">
+    <link rel="canonical" href="https://aleeza-beauty-makeover-studio.web.app/index.html">
+    
+    <!-- Open Graph Tags (for social media sharing) -->
+    <meta property="og:title" content="ALEEZA BEAUTY MAKEOVER STUDIO - Thrissur">
+    <meta property="og:description" content="Expert bridal makeup, hairstyling, and professional beauty courses in Thrissur.">
+    <meta property="og:image" content="https://eaamxtitxrsteidkmskl.supabase.co/storage/v1/object/public/Images/LOGO.png">
+    <meta property="og:url" content="https://aleeza-beauty-makeover-studio.web.app/index.html">
+    <meta property="og:type" content="website">
+    <!-- End of SEO Tags -->
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Scripts --><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style type="text/css">
+        /* --- Base and Font Styles --- */
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        /* --- Hero Animations --- */
+        
+        @keyframes zoomOut {
+            from { transform: scale(1.15); }
+            to { transform: scale(1); }
+        }
+        .zoom-out {
+            animation: zoomOut 20s linear infinite alternate;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+        }
+        .fade-in-up.delay { animation-delay: 0.3s; }
+        .logo.fade-in-up { animation-delay: 0.1s; }
+        .hero-title.fade-in-up { animation-delay: 0.2s; }
+        
+        
+        /* UPDATED: Title styling for single line (Responsive Font) */
+        .hero-title {
+            white-space: normal; /* Allow wrapping on small screens */
+            text-align: center;
+            /* UPDATED clamp() for better mobile sizing */
+            font-size: clamp(1.75rem, 8vw, 4.5rem);
+            line-height: 1.2;
+            overflow-wrap: break-word; /* Ensure it wraps */
+        }
+        /* Force single line only on larger screens */
+        @media (min-width: 768px) {
+            .hero-title {
+                white-space: nowrap;
+            }
+        }
+        
+        .logo-container {
+            position: relative;
+            display: inline-block;
+        }
+        .logo-container::after {
+            content: '';
+            position: absolute;
+            top: 0; 
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, 0.7);
+            animation: pulse 2.5s infinite ease-out;
+            z-index: -1;
+        }
+        @keyframes pulse {
+            0% {
+                transform: scale(0.9);
+                opacity: 0.7;
+            }
+            70% {
+                transform: scale(1.25);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+        }
+
+        /* --- Mobile Menu --- */
+        .hamburger .line {
+            width: 30px; 
+            height: 3px; 
+            background-color: white; 
+            margin: 6px 0; 
+            transition: all 0.3s ease;
+        }
+        .hamburger.open .line:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+        .hamburger.open .line:nth-child(2) { opacity: 0; }
+        .hamburger.open .line:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+
+        .mobile-nav {
+            position: fixed; 
+            top: 84px; /* UPDATED: 5.25rem to match new header height */
+            right: -100%; 
+            width: 100%; 
+            height: calc(100vh - 84px);
+            background-color: rgba(60, 12, 49, 0.95); 
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: right 0.4s ease-in-out;
+            overflow-y: auto;
+            z-index: 45; 
+        }
+        .mobile-nav.show { 
+            right: 0; 
+        }
+
+        .overlay {
+            position: fixed; 
+            inset: 0; 
+            background-color: rgba(0, 0, 0, 0.5);
+            opacity: 0; 
+            visibility: hidden; 
+            transition: opacity 0.4s ease, visibility 0.4s;
+            z-index: 40; 
+        }
+        .overlay.show { 
+            opacity: 1; 
+            visibility: visible; 
+        }
+
+        /* --- Page Sections --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px) scale(0.98);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .service-card, .course-card {
+            background-color: rgba(212, 175, 55, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        .service-card:hover, .course-card:hover {
+            background-color: rgba(212, 175, 55, 0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        #achievements .bg-primary {
+            background-color: #3c0c31; 
+        }
+        #achievements .bg-primary:hover {
+             background-color: #3c0c31; 
+             transform: translateY(-5px);
+             box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        /* UPDATED: NEW Title Line Animation (Mobile First) */
+        .title-animated-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Allow stacking on mobile */
+            flex-wrap: wrap; 
+            width: 100%;
+        }
+        .title-animated-container .title-line {
+            height: 2px;
+            background-color: #D4AF37;
+            width: 80px; /* Fixed short width for mobile */
+            margin: 0 0.5em;
+            transition: width 0.4s ease;
+        }
+        .title-animated-container .title-text {
+            /* Text will wrap on its own */
+            width: 100%;
+            padding: 0.5em 0; /* Space between lines and text */
+            order: -1; /* Puts text on top */
+            flex-shrink: 0; 
+            font-size: 1.875rem; /* text-3xl for mobile */
+            text-align: center; 
+        }
+        
+        /* Desktop styles for title lines */
+        @media (min-width: 768px) {
+            .title-animated-container {
+                flex-wrap: nowrap; /* Go back to single line */
+            }
+             .title-animated-container .title-line {
+                flex-grow: 1; /* Allow stretching */
+                max-width: 120px; 
+                width: 100%;
+             }
+             .title-animated-container:hover .title-line {
+                max-width: 200px; /* Grow on hover */
+            }
+             .title-animated-container .title-text {
+                font-size: 2.25rem; /* text-4xl for desktop */
+                padding: 0 1em;
+                order: 0; /* Put text back in the middle */
+                width: auto; /* Let it be its natural width */
+            }
+        }
+
+
+        /* --- Horizontal Auto-Scrolling Gallery --- */
+        #gallery {
+            position: relative;
+        }
+        .gallery-viewport {
+            width: 100%;
+            overflow: hidden;
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        }
+        .gallery-scroller {
+            display: flex;
+            flex-wrap: nowrap;
+            width: max-content;
+        }
+        .gallery-scroller.scrolling {
+            animation: scrollLeft linear infinite;
+        }
+        @keyframes scrollLeft {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); } 
+        }
+        .gallery-card {
+            width: 80vw; /* Responsive mobile width */
+            margin-right: 1rem; 
+            border-radius: 0.75rem; 
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 6px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            flex-shrink: 0; 
+        }
+        .gallery-card img {
+            width: 100%;
+            height: 350px; /* Shorter for mobile */
+            object-fit: cover;
+            display: block;
+            border-radius: 0.75rem; 
+            cursor: pointer;
+        }
+        /* Desktop styles for gallery cards */
+         @media (min-width: 768px) {
+            .gallery-card {
+                width: 350px;
+                margin-right: 2rem;
+            }
+            .gallery-card img {
+                height: 400px;
+            }
+         }
+
+        /* --- Gallery Modal --- */
+        .gallery-modal {
+            display: none; 
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            animation: fadeInModal 0.3s ease;
+        }
+        @keyframes fadeInModal {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .gallery-modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 0.5rem;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+            animation: zoomInModal 0.3s ease;
+        }
+        @keyframes zoomInModal {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .gallery-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .gallery-modal-close:hover,
+        .gallery-modal-close:focus {
+            color: #D4AF37; 
+        }
+
+        /* UPDATED: Logo styling (Circular) */
+        .header-logo {
+            border: 2px solid white; /* White border */
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.7), /* White glow */
+                        0 0 20px rgba(255, 255, 255, 0.5); /* Wider glow */
+            border-radius: 50%; /* UPDATED to circular */
+        }
+
+        /* NEW: Review Card Styles */
+        .review-card-link {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+        }
+        #review-card-content {
+            /* This holds the content that fades */
+            transition: opacity 0.5s ease-in-out;
+        }
+        #review-card-content.is-fading {
+            opacity: 0;
+        }
+        .review-stars {
+            color: #D4AF37; /* gold */
+            font-size: 1.5rem;
+            letter-spacing: 0.1em;
+        }
+        
+        /* NEW: Button Shine Animation */
+        .btn-shine {
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            /* Ensure other button styles are compatible */
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .btn-shine:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+        }
+        /* Golden shine pseudo-element */
+        .btn-shine::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.6s ease;
+            transform: skewX(-25deg); /* Slant the shine */
+        }
+        .btn-shine:hover::after {
+            left: 150%;
+        }
+        /* Specific override for the form button to be full width */
+        #contactSubmitBtn {
+            display: block;
+        }
+        
+        /* NEW: Learn More Button Style */
+        .btn-learn-more {
+            color: #D4AF37; /* gold */
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border: 2px solid #D4AF37; /* gold border */
+            border-radius: 9999px; /* curved / pill shape */
+            text-decoration: none; /* Remove underline */
+        }
+        .btn-learn-more:hover {
+            background-color: #D4AF37;
+            color: #3c0c31; /* primary */
+        }
+        
+        /* REMOVED: Review Button Style (it's no longer used) */
+        
+    </style>
+</head>
+<body class="bg-primary text-gold">
+    <!-- Header --><header id="header" class="fixed top-0 w-full bg-transparent backdrop-blur-md z-50 transition-all duration-300">
+        <!-- UPDATED: Fixed mobile header layout -->
+        <div class="w-full px-4 py-4 flex justify-between items-center"> <!-- py-4 is smaller, px-4 is smaller -->
+            <a href="#home">
+                <img src="https://eaamxtitxrsteidkmskl.supabase.co/storage/v1/object/public/Images/LOGO.png" alt="Aleeza Beauty Logo" class="h-14 w-14 object-cover header-logo"> <!-- UPDATED: Made dimensions square for circle -->
+            </a>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#home" class="text-white hover:text-primary transition">Home</a>
+                <a href="#about" class="text-white hover:text-primary transition">About</a>
+                <a href="#services" class="text-white hover:text-primary transition">Services</a>
+                <a href="courses.html" class="text-white hover:text-primary transition">Courses</a>
+                <a href="#gallery" class="text-white hover:text-primary transition">Gallery</a>
+                <a href="#contact" class="text-white hover:text-primary transition">Contact</a>
+            </nav>
+            <button class="md:hidden text-white" id="menu-toggle" aria-label="Open menu">
+                <div class="hamburger">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+            </button>
+        </div>
+        <nav class="mobile-nav md:hidden" id="mobile-nav">
+            <div class="px-6 py-8 space-y-6">
+                <a href="#home" class="block text-white hover:text-gold hover:bg-gold hover:bg-opacity-10 px-4 py-3 rounded-lg transition-all duration-300 font-semibold">Home</a>
+                <a href="#about" class="block text-white hover:text-gold hover:bg-gold hover:bg-opacity-10 px-4 py-3 rounded-lg transition-all duration-300 font-semibold">About</a>
+                <a href="#services" class="block text-white hover:text-gold hover:bg-gold hover:bg-opacity-10 px-4 py-3 rounded-lg transition-all duration-300 font-semibold">Services</a>
+                <a href="courses.html" class="block text-white hover:text-gold hover:bg-gold hover:bg-opacity-10 px-4 py-3 rounded-lg transition-all duration-300 font-semibold">Courses</a>
+                <a href="#gallery" class="block text-white hover:text-gold hover:bg-gold hover:bg-opacity-10 px-4 py-3 rounded-lg transition-all duration-300 font-semibold">Gallery</a>
+                <a href="#contact" class="block text-white hover:text-gold hover:bg-gold hover:bg-opacity-10 px-4 py-3 rounded-lg transition-all duration-300 font-semibold">Contact</a>
+                <a href="https://wa.me/7034692274" target="_blank" class="block text-white hover:text-gold hover:bg-gold hover:bg-opacity-10 px-4 py-3 rounded-lg transition-all duration-300 font-semibold">Help and Support</a>
+            </div>
+        </nav>
+        <div id="overlay" class="overlay"></div>
+    </header>
+
+    <!-- Hero Section --><section id="home" class="relative h-screen flex items-center justify-center text-center text-white overflow-hidden">
+        <div class="absolute inset-0 bg-cover bg-center zoom-out" style="background-image: url('https://i.postimg.cc/hPLySwyT/bg.jpg'); background-position: center top;"></div>
+        <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+        <div class="relative z-10 px-4"> <!-- Added px-4 for safety on small screens -->
+            <div class="logo-container mx-auto mb-6 w-48 h-48 md:w-64 md:h-64">
+                <img src="https://eaamxtitxrsteidkmskl.supabase.co/storage/v1/object/public/Images/LOGO.png" alt="Aleeza Beauty Logo" class="logo w-full h-full fade-in-up">
+            </div>
+            <!-- UPDATED: Title is now plain text, no JS animation -->
+            <h1 class="font-bold mb-6 fade-in-up hero-title">
+                ALEEZA BEAUTY MAKEOVER STUDIO
+            </h1>
+            <p class="text-lg sm:text-xl md:text-2xl mb-8 fade-in-up delay leading-relaxed">We bring joy in every touch, creating a beauty experience that makes you feel refreshed, confident, and radiant.</p>
+        </div>
+    </section>
+    
+    <!-- UPDATED: About Section Layout --><section id="about" class="py-20 bg-primary text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- UPDATED: New Title Structure -->
+            <div class="title-animated-container mb-12">
+                <span class="title-line"></span>
+                <h2 class="title-text font-bold text-gold uppercase">About Aleeza</h2>
+                <span class="title-line"></span>
+            </div>
+            
+            <!-- Top Paragraph -->
+            <div class="mb-8">
+                <p class="text-lg text-white mb-4">
+                    Aleeza Beauty Makeover Studio was founded by Mrs. Shymi Thomas on 23 January 2019 with a vision to bring joy, confidence, and elegance to every individual who walks through the door. The studio was inaugurated by her mother and blessed by Rev. Fr. Shaji Kochupurakkal, the former Vicar of Mount Carmel Church, Mundur.
+                </p>
+                <p class="text-lg text-white">
+                    The name Aleeza, meaning joyful, beautifully reflects the spirit of our studio—where every service is delivered with passion, warmth, and a commitment to enhancing natural beauty.
+                </p>
+            </div>
+
+            <!-- Middle Section: Image | Merged Paragraphs -->
+            <div class="grid md:grid-cols-2 gap-12 items-center mb-8">
+                <!-- Image with Hover Effect -->
+                <div class="relative group">
+                    <img src="https://eaamxtitxrsteidkmskl.supabase.co/storage/v1/object/public/Images/WhatsApp%20Image%202025-08-11%20at%2020.55.03_ebddfb14.jpg" alt="Aleeza Studio Founder Shymi Thomas" class="w-full h-auto object-contain rounded-lg shadow-lg">
+                    <div class="absolute inset-0 bg-black bg-opacity-70 flex flex-col items-center justify-center text-center p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg">
+                        <p class="font-bold text-2xl text-white">SHYMI THOMAS</p>
+                        <p class="text-sm text-gold tracking-widest mt-2">FOUNDER OF ALEEZA BEAUTY MAKEOVER STUDIO</p>
+                    </div>
+                </div>
+                <!-- Text Next to Image -->
+                <div>
+                    <p class="text-lg text-white mb-4">
+                        Located near Sobha City Mall, Puzhakkal – Ambakkad Church Road, Thrissur, Kerala, Aleeza Beauty Makeover Studio has grown into a trusted beauty destination known for creativity, professionalism, and genuine care. The studio was renovated with a fresh new look on March 08, 2024, and expanded with the opening of a second shop at the same location on September 2, 2025.
+                    </p>
+                    <p class="text-lg text-white mb-4">
+                        The founder, Mrs. Shymi Thomas, is a highly accomplished beauty professional with several prestigious recognitions to her name:
+                    </p>
+                    <ul class="text-lg text-white mb-4 list-disc list-inside space-y-2">
+                        <li>Kalams World Record Holder for Spectacular Ramp Walk – Season 3 (Rising Stars Event)</li>
+                        <li>National-Level Bridal Contest Winner</li>
+                        <li>Kerala State-Level 4th Runner-Up (Bridal Contest)</li>
+                        <li>Best Eye Makeup Award – State Level</li>
+                    </ul>
+                    <!-- MOVED: Bottom paragraphs are now here -->
+                    <p class="text-lg text-white mb-4">
+                        With her dedication, talent, and artistic vision, Mrs. Shymi has built Aleeza into a space where clients experience more than just beauty services—they feel valued, confident, and celebrated. Her expertise in bridal and fashion makeover artistry has made Aleeza a preferred choice for brides, models, and clients seeking personalized beauty transformations.
+                    </p>
+                    <p class="text-lg text-white mb-4">
+                        At Aleeza Beauty Makeover Studio, we go beyond traditional beauty services. We focus on understanding each client's style, personality, and comfort to create looks that highlight individuality and natural charm. Our team stays updated with the latest trends, techniques, and international beauty standards, ensuring that every makeover is modern, elegant, and timeless.
+                    </p>
+                    <p class="text-lg text-white">
+                        We also provide professional beauty training courses for aspiring artists, helping women build confidence, develop their skills, and step into the world of beauty with knowledge and creativity. Many of our students have gone on to establish themselves successfully in the beauty industry.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Achievements Section - MOVED --><section id="achievements" class="py-20 bg-primary text-white">
+        <div class="container mx-auto px-4">
+            <!-- UPDATED: New Title Structure -->
+            <div class="title-animated-container mb-12">
+                <span class="title-line"></span>
+                <h2 class="title-text font-bold text-gold uppercase">Achievements</h2>
+                <span class="title-line"></span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center reveal">
+                    <div class="bg-primary bg-opacity-10 p-6 rounded-lg hover:bg-opacity-20 transition border border-gold border-opacity-30">
+                        <h3 class="text-xl font-semibold mb-2 text-gold">Kalams World Record</h3>
+                        <p class="text-white">Spectacular Ramp Walk</p>
+                    </div>
+                </div>
+                <div class="text-center reveal">
+                    <div class="bg-primary bg-opacity-10 p-6 rounded-lg hover:bg-opacity-20 transition border border-gold border-opacity-30">
+                        <h3 class="text-xl font-semibold mb-2 text-gold">National Level Winner</h3>
+                        <p class="text-white">Bridal Contest</p>
+                    </div>
+                </div>
+                <div class="text-center reveal">
+                    <div class="bg-primary bg-opacity-10 p-6 rounded-lg hover:bg-opacity-20 transition border border-gold border-opacity-30">
+                        <h3 class="text-xl font-semibold mb-2 text-gold">Kerala State Level</h3>
+                        <p class="text-white">4th Runner-up Award for Bridal Contest</p>
+                    </div>
+                </div>
+                <div class="text-center reveal">
+                    <div class="bg-primary bg-opacity-10 p-6 rounded-lg hover:bg-opacity-20 transition border border-gold border-opacity-30">
+                        <h3 class="text-xl font-semibold mb-2 text-gold">State Level Award</h3>
+                        <p class="text-white">Best Eye Makeup</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section --><section id="services" class="py-20 bg-primary">
+        <div class="container mx-auto px-4">
+            <!-- UPDATED: New Title Structure -->
+            <div class="title-animated-container mb-12">
+                <span class="title-line"></span>
+                <h2 class="title-text font-bold text-gold uppercase">Services we offer</h2>
+                <span class="title-line"></span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-white">
+                <!-- UPDATED: All "Learn More" buttons styled -->
+                <div class="service-card reveal">
+                    <h3 class="text-2xl font-semibold mb-4">Facial</h3>
+                    <p>Rejuvenating facial treatments for healthy, glowing skin.</p>
+                    <div class="mt-4 transition">
+                        <a href="#contact" class="btn-learn-more btn-shine">Learn More</a>
+                    </div>
+                </div>
+                <div class="service-card reveal">
+                    <h3 class="text-2xl font-semibold mb-4">Bleach</h3>
+                    <p>Safe bleaching services to lighten and brighten your skin.</p>
+                    <div class="mt-4 transition">
+                        <a href="#contact" class="btn-learn-more btn-shine">Learn More</a>
+                    </div>
+                </div>
+                <div class="service-card reveal">
+                    <h3 class="text-2xl font-semibold mb-4">Advanced Facial</h3>
+                    <p>Premium facial treatments with advanced techniques.</p>
+                    <div class="mt-4 transition">
+                        <a href="#contact" class="btn-learn-more btn-shine">Learn More</a>
+                    </div>
+                </div>
+                <div class="service-card reveal">
+                    <h3 class="text-2xl font-semibold mb-4">Cutting</h3>
+                    <p>Professional hair cutting services for all styles.</p>
+                    <div class="mt-4 transition">
+                        <a href="#contact" class="btn-learn-more btn-shine">Learn More</a>
+                    </div>
+                </div>
+                <div class="service-card reveal">
+                    <h3 class="text-2xl font-semibold mb-4">Colouring</h3>
+                    <p>Expert hair colouring for vibrant, long-lasting results.</p>
+                    <div class="mt-4 transition">
+                        <a href="#contact" class="btn-learn-more btn-shine">Learn More</a>
+                    </div>
+                </div>
+                <div class="service-card reveal">
+                    <h3 class="text-2xl font-semibold mb-4">Chemical Treatments</h3>
+                    <p>Specialized chemical treatments for hair health and style.</p>
+                    <div class="mt-4 transition">
+                        <a href="#contact" class="btn-learn-more btn-shine">Learn More</a>
+                    </div>
+                </div>
+                <div class="service-card reveal">
+                    <h3 class="text-2xl font-semibold mb-4">Protein Treatments</h3>
+                    <p>Nourishing protein treatments to strengthen your hair.</p>
+                    <div class="mt-4 transition">
+                        <a href="#contact" class="btn-learn-more btn-shine">Learn More</a>
+                    </div>
+                </div>
+                <div class="service-card reveal">
+                    <h3 class="text-2xl font-semibold mb-4">Bridal Makeup</h3>
+                    <p>Flawless, timeless looks for your special day.</p>
+                    <div class="mt-4 transition">
+                        <a href="#contact" class="btn-learn-more btn-shine">Learn More</a>
+                    </div>
+                </div>
+                <div class="service-card reveal">
+                    <h3 class="text-2xl font-semibold mb-4">Groom Makeup</h3>
+                    <p>Refined grooming and makeup for the modern groom.</p>
+                    <div class="mt-4 transition">
+                        <a href="#contact" class="btn-learn-more btn-shine">Learn More</a>
+                    </div>
+                </div>
+                <div class="service-card reveal">
+                    <h3 class="text-2xl font-semibold mb-4">Guest Look Makeup</h3>
+                    <p>Elegant makeup for wedding guests and special occasions.</p>
+                    <div class="mt-4 transition">
+                        <a href="#contact" class="btn-learn-more btn-shine">Learn More</a>
+                    </div>
+                </div>
+                <div class="service-card reveal">
+                    <h3 class="text-2xl font-semibold mb-4">Eyebrow Threading</h3>
+                    <p>Precise eyebrow threading for perfect shape and definition.</p>
+                    <div class="mt-4 transition">
+                        <a href="#contact" class="btn-learn-more btn-shine">Learn More</a>
+                    </div>
+                </div>
+                <div class="service-card reveal">
+                    <h3 class="text-2xl font-semibold mb-4">Bridal Services</h3>
+                    <p>Complete bridal packages including makeup and hair.</p>
+                    <div class="mt-4 transition">
+                        <a href="#contact" class="btn-learn-more btn-shine">Learn More</a>
+                    </div>
+                </div>
+                <div class="service-card reveal">
+                    <h3 class="text-2xl font-semibold mb-4">Haircut</h3>
+                    <p>Professional haircuts tailored to your style.</p>
+                    <div class="mt-4 transition">
+                        <a href="#contact" class="btn-learn-more btn-shine">Learn More</a>
+                    </div>
+                </div>
+                <div class="service-card reveal">
+                    <h3 class="text-2xl font-semibold mb-4">Hairstyling</h3>
+                    <p>Creative hairstyling for any occasion.</p>
+                    <div class="mt-4 transition">
+                        <a href="#contact" class="btn-learn-more btn-shine">Learn More</a>
+                    </div>
+                </div>
+                <div class="service-card reveal">
+                    <h3 class="text-2xl font-semibold mb-4">Hair Threading</h3>
+                    <p>Gentle hair threading for unwanted hair removal.</p>
+                    <div class="mt-4 transition">
+                        <a href="#contact" class="btn-learn-more btn-shine">Learn More</a>
+                    </div>
+                </div>
+                <div class="service-card reveal">
+                    <h3 class="text-2xl font-semibold mb-4">Shampoo & Conditioning</h3>
+                    <p>Luxurious shampoo and conditioning treatments.</p>
+                    <div class="mt-4 transition">
+                        <a href="#contact" class="btn-learn-more btn-shine">Learn More</a>
+                    </div>
+                </div>
+                <div class="service-card reveal">
+                    <h3 class="text-2xl font-semibold mb-4">Skin Care</h3>
+                    <p>Comprehensive skin care treatments and advice.</p>
+                    <div class="mt-4 transition">
+                        <a href="#contact" class="btn-learn-more btn-shine">Learn More</a>
+                    </div>
+                </div>
+                <div class="service-card reveal">
+                    <h3 class="text-2xl font-semibold mb-4">Tanning</h3>
+                    <p>Professional tanning services for a sun-kissed glow.</p>
+                    <div class="mt-4 transition">
+                        <a href="#contact" class="btn-learn-more btn-shine">Learn More</a>
+                    </div>
+                </div>
+                <div class="service-card reveal">
+                    <h3 class="text-2xl font-semibold mb-4">Wedding and Event Preparation</h3>
+                    <p>Full preparation services for weddings and events.</p>
+                    <div class="mt-4 transition">
+                        <a href="#contact" class="btn-learn-more btn-shine">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW: Reviews Section --><section id="reviews" class="py-20 bg-primary">
+        <div class="container mx-auto px-4">
+            <!-- UPDATED: New Title Structure -->
+            <div class="title-animated-container mb-12">
+                <span class="title-line"></span>
+                <h2 class="title-text font-bold text-gold uppercase">What Our Clients Say</h2>
+                <span class="title-line"></span>
+            </div>
+            
+            <!-- Review Card -->
+            <div class="max-w-2xl mx-auto">
+                <a id="review-card-link" href="#" target="_blank" class="review-card-link service-card block text-white text-center min-h-[250px] md:min-h-[200px] flex items-center justify-center">
+                    <div id="review-card-content" class="is-fading">
+                        <div id="review-stars" class="review-stars mb-4"></div>
+                        <h3 id="review-name" class="text-2xl font-semibold mb-4"></h3>
+                        <p id="review-comment" class="text-lg italic"></p>
+                    </div>
+                </a>
+                <!-- REMOVED: "See all reviews" button -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Horizontal Gallery Section --><section id="gallery" class="py-20 bg-primary overflow-hidden">
+        <div class="container mx-auto px-4">
+            <!-- UPDATED: New Title Structure -->
+            <div class="title-animated-container mb-12">
+                <span class="title-line"></span>
+                <h2 class="title-text font-bold text-gold uppercase">Gallery</h2>
+                <span class="title-line"></span>
+            </div>
+            <div class="gallery-viewport">
+                <div class="gallery-scroller" id="gallery-scroller">
+                    <!-- Images will be dynamically injected here --></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section --><section id="contact" class="py-20 bg-primary text-white">
+        <div class="container mx-auto px-4">
+            <!-- UPDATED: New Title Structure -->
+            <div class="title-animated-container mb-12">
+                <span class="title-line"></span>
+                <h2 class="title-text font-bold text-gold uppercase">Contact Us</h2>
+                <span class="title-line"></span>
+            </div>
+            <div class="max-w-2xl mx-auto">
+                <form id="contactForm" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <input type="text" name="name" placeholder="Name" required class="w-full p-3 rounded-lg bg-black bg-opacity-10 border border-white border-opacity-20 focus:outline-none focus:border-gold text-white">
+                        <input type="email" name="email" placeholder="Email" required class="w-full p-3 rounded-lg bg-black bg-opacity-10 border border-white border-opacity-20 focus:outline-none focus:border-gold text-white">
+                    </div>
+                    <input type="tel" name="phone" placeholder="+91 Phone Number" required class="w-full p-3 rounded-lg bg-black bg-opacity-10 border border-white border-opacity-20 focus:outline-none focus:border-gold text-white">
+                    <input type="text" name="address" placeholder="Address" required class="w-full p-3 rounded-lg bg-black bg-opacity-10 border border-white border-opacity-20 focus:outline-none focus:border-gold text-white">
+                    <select name="service" required class="w-full p-3 rounded-lg bg-primary border border-gold border-opacity-50 shadow-xl focus:outline-none focus:border-gold focus:shadow-2xl text-white">
+                        <option value="">Please select a service...</option>
+                        <option>Facial</option>
+                        <option>Bleach</option>
+                        <option>Advanced Facial</option>
+                        <option>Cutting</option>
+                        <option>Colouring</option>
+                        <option>Chemical Treatments</option>
+                        <option>Protein Treatments</option>
+                        <option>Bridal Makeup</option>
+                        <option>Groom Makeup</option>
+                        <option>Guest Look Makeup</option>
+                        <option>Eyebrow Threading</option>
+                        <option>Bridal Services</option>
+                        <option>Haircut</option>
+                        <option>Hairstyling</option>
+                        <option>Hair Threading</option>
+                        <option>Shampoo & Conditioning</option>
+                        <option>Skin Care</option>
+                        <option>Tanning</option>
+                        <option>Wedding and Event Preparation</option>
+                        <option>General Inquiry</option>
+                    </select>
+                    <textarea name="message" placeholder="Your Message (Optional)" rows="4" class="w-full p-3 rounded-lg bg-black bg-opacity-10 border border-white border-opacity-20 focus:outline-none focus:border-gold text-white"></textarea>
+                    <!-- UPDATED: Added btn-shine class -->
+                    <button type="submit" id="contactSubmitBtn" class="w-full bg-white text-primary py-3 rounded-lg font-semibold hover:bg-opacity-90 btn-shine">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- UPDATED: Footer with new Map Link --><footer class="bg-primary text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p class="mb-4">Aleeza Beauty Parlour, near Shoba City, Puzhakkal, Thrissur, Kerala 680553</p>
+            <p class="mb-4">Phone: +91 83019 69522 | Email: aleezabeautymakeoverstudio@gmail.com</p>
+            
+            <!-- Embedded Google Map -->
+            <div class="w-full max-w-lg mx-auto my-6">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2008.234328329618!2d76.17658702330894!3d10.547040402094833!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba7ed95f2932aa3%3A0x2008339488034802!2sAleeza%20Beauty%20Make%20Over%20Studio!5e0!3m2!1sen!2sin!4v1731821894101!5m2!1sen!2sin" class="w-full h-64 rounded-lg border-2 border-gold" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+
+            <!-- UPDATED: Get Directions Button link -->
+            <a href="https://maps.app.goo.gl/mRZBkorbWgK4xGfo9" target="_blank" class="inline-block bg-gold text-primary px-4 py-2 rounded-lg font-semibold hover:bg-opacity-90 transition mb-4 btn-shine">Get Directions</a>
+            
+            <div class="mt-8 flex justify-center space-x-6">
+                <a href="https://www.instagram.com/_aleeza_beauty/?__pwa=1#" target="_blank" class="text-white hover:text-gold transition" aria-label="Instagram">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                </a>
+                <a href="https://www.facebook.com/profile.php?id=100064938013580" target="_blank" class="text-white hover:text-gold transition" aria-label="Facebook">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                </a>
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=aleezabeautymakeoverstudio@gmail.com" target="_blank" class="text-white hover:text-gold transition" aria-label="Email">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+G
+                </a>
+            </div>
+            <p class="mt-4 text-sm">© 2025 Aleeza Beauty Makeover Studio. All rights reserved.</p>
+            <p class="mt-2 text-xs"><a href="https://www.instagram.com/_.d3z_fx._/?__pwa=1#" target="_blank" class="text-gold hover:text-white">MADE AND DEPLOYED BY D3ZTUDIO</a></p>
+        </div>
+    </footer>
+
+    <!-- Gallery Modal --><div id="gallery-modal" class="gallery-modal">
+        <span class="gallery-modal-close" id="gallery-modal-close">×</span>
+        <img class="gallery-modal-content" id="gallery-modal-image" src="" alt="Gallery Image">
+    </div>
+
+
+    <script>
+        // --- Tailwind Config ---
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#3c0c31',
+                        'gold': '#D4AF37',
+                        'dark-gold': '#B8860B',
+                        'white': '#FFFFFF'
+                    }
+                }
+            }
+        }
+      
+        // --- Header scroll effect ---
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            const mobileNav = document.getElementById('mobile-nav');
+            if (window.scrollY > 100) {
+                header.classList.add('bg-primary', 'bg-opacity-90', 'shadow-lg');
+            } else {
+                header.classList.remove('bg-primary', 'bg-opacity-90', 'shadow-lg');
+            }
+            // Adjust mobile nav top position based on scroll
+            if (mobileNav.classList.contains('show')) {
+                mobileNav.style.top = header.offsetHeight + 'px';
+            }
+        });
+
+        // --- Mobile menu toggle ---
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileNav = document.getElementById('mobile-nav');
+        const overlay = document.getElementById('overlay');
+        const hamburger = document.querySelector('.hamburger');
+        const header = document.getElementById('header');
+
+        menuToggle.addEventListener('click', () => {
+            // Set top position just before showing
+            mobileNav.style.top = header.offsetHeight + 'px';
+            mobileNav.classList.toggle('show');
+            overlay.classList.toggle('show');
+            hamburger.classList.toggle('open');
+        });
+
+        overlay.addEventListener('click', () => {
+            mobileNav.classList.remove('show');
+            overlay.classList.remove('show');
+            hamburger.classList.remove('open');
+        });
+
+        mobileNav.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A') {
+                mobileNav.classList.remove('show');
+                overlay.classList.remove('show');
+                hamburger.classList.remove('open');
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!mobileNav.contains(e.target) && !menuToggle.contains(e.target) && mobileNav.classList.contains('show')) {
+                mobileNav.classList.remove('show');
+                overlay.classList.remove('show');
+                hamburger.classList.remove('open');
+            }
+        });
+
+        // UPDATED: Smarter smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                
+                // Check if it's a valid on-page link (not just "#" or empty)
+                if (href && href.length > 1) {
+                    const targetElement = document.querySelector(href);
+                    // If element exists, prevent default and scroll
+                    if (targetElement) {
+                        e.preventDefault();
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                    // If targetElement doesn't exist, do nothing and let the browser handle it.
+                }
+                // If href is just "#" (like the review links),
+                // do nothing. The click will proceed as normal (and open in a new tab).
+            });
+        });
+
+        // --- Scroll reveal ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+
+        // --- Contact Form submission ---
+        document.getElementById('contactForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const name = form.name.value.trim();
+            const email = form.email.value.trim();
+            const phone = form.phone.value.trim();
+            const address = form.address.value.trim();
+            const service = form.service.value;
+            const message = form.message.value.trim();
+
+            if (!name || !email || !phone || !address || !service) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+
+            let fullPhone = phone;
+            if (!fullPhone.startsWith('+91')) {
+                fullPhone = '+91' + fullPhone.replace(/^\+91/, '');
+            }
+
+            const data = { name, email, phone: fullPhone, address, service, message };
+
+            try {
+                const whatsappMessage = `Hello Aleeza Studio, I have an inquiry.\n\nName: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone}\nAddress: ${data.address}\nService Interest: ${data.service}\nMessage: ${data.message}`;
+                const whatsappUrl = `https://wa.me/918301969522?text=${encodeURIComponent(whatsappMessage)}`;
+                window.location.href = whatsappUrl;
+                form.reset();
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            }
+        });
+
+        // ==================================================================
+        // --- NEW: Fading Reviews Script ---
+        // ==================================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- UPDATED: This is the correct GOOGLE MAPS URL ---
+            const GOOGLE_REVIEWS_URL = "https://www.google.com/search?q=aleeza+beauty+makeover+stuudio&oq=a&gs_lcrp=EgZjaHJvbWUqCAgDEEUYJxg7MgYIABBFGDwyBggBEEUYOzIQCAIQLhjHARixAxjRAxiABDIICAMQRRgnGDsyBggEEEUYPDIGCAUQRRg8MgYIBhBFGDwyBggHEAUYQNIBCDIwMjRqMGo3qAIIsAIB8QXqxmVn-C9m5PEF6sZlZ_gvZuQ&sourceid=chrome&ie=UTF-8#mpd=~15800783921251745237/customers/reviews";
+            
+            // --- UPDATED: Now 28 hand-picked 4 & 5-star reviews ---
+            const reviews = [
+                {
+                    name: "Aiswarya V A",
+                    stars: 5,
+                    comment: "One of the best bridal makeup... Shymi chechi is very friendly... I'm really happy with her work... Thank you so much chechiii..."
+                },
+                {
+                    name: "Jomina V J",
+                    stars: 5,
+                    comment: "I had a wonderful experience at Aleeza Beauty Parlour. Very professional and friendly... She did a fantastic job on my bridal makeup..."
+                },
+                {
+                    name: "Rose Mary",
+                    stars: 5,
+                    comment: "I had a wonderful experience... She is very friendly and passionate about her work... Highly recommend Aleeza Beauty Makeover Studio."
+                },
+                {
+                    name: "Anjitha K S",
+                    stars: 5,
+                    comment: "Shymi chechi is very friendly & professional. She did a great job in my engagement makeup. I'm really happy with her work..."
+                },
+                {
+                    name: "arya m",
+                    stars: 5,
+                    comment: "She is very friendly and her works are really amazing... I am really happy with her work... Thank you shymi chechi❤️"
+                },
+                {
+                    name: "Amritha T R",
+                    stars: 5,
+                    comment: "I had a great experience with Aleeza beauty...I am really happy with my bridal makeup...it was really awesome...Thank you so much Shymi chechi😍"
+                },
+                {
+                    name: "Neethu T S",
+                    stars: 5,
+                    comment: "Did my engagement makeup from here... Shymi chechi is very friendly... I'm really happy with her work... Highly recommended ❤️"
+                },
+                {
+                    name: "Anagha Manoharan",
+                    stars: 5,
+                    comment: "Did my bridal make up from Aleeza... Shymi chechi did a great job... I'm really happy with her work... Thank you so much chechi 🥰"
+                },
+                {
+                    name: "Jovita Johnson",
+                    stars: 5,
+                    comment: "Best parlour in thrissur... I'm really satisfied with their works and staffs.. Especially shymi chechi... Thank you chechi❤️"
+                },
+                {
+                    name: "SREELAKSHMI P S",
+                    stars: 5,
+                    comment: "I had a great experience with aleeza beauty parlour... really happy with my bridal makeup... tq shymi chechii... ❤️"
+                },
+                {
+                    name: "Athira M",
+                    stars: 5,
+                    comment: "Wonderful experience... Shymi chechi is very friendly... I'm really happy with her work 🥰"
+                },
+                {
+                    name: "Anjali P",
+                    stars: 4,
+                    comment: "Good service and friendly staff... Highly recommended."
+                },
+                {
+                    name: "Anu Mohan",
+                    stars: 5,
+                    comment: "I'm really happy with her work.. she is very friendly... Thank you shymi chechi❤️"
+                },
+                {
+                    name: "Sreethu G",
+                    stars: 5,
+                    comment: "One of the best makeup artist in thrissur... I'm really happy with her work... Thank you shymi chechi... Highly recommended ❤️"
+                },
+                {
+                    name: "Reshma P R",
+                    stars: 5,
+                    comment: "One of the best bridal makeup artist in Thrissur. Highly recommended..."
+                },
+                {
+                    name: "sandra davis",
+                    stars: 5,
+                    comment: "One of the best makeup studio in thrissur...very professional and friendly...i am really happy with her work..tq shymi chechi...❤️"
+                },
+                {
+                    name: "Lakshmi Unnikrishnan",
+                    stars: 5,
+                    comment: "Thank you shymi chechi... I'm really happy with your work... Highly recommended ❤️"
+                },
+                {
+                    name: "Silpa T S",
+                    stars: 5,
+                    comment: "Thank you shymi chechi...I am really happy with her work...Highly recommended ❤️"
+                },
+                {
+                    name: "Amritha M",
+                    stars: 5,
+                    comment: "She is very friendly... I'm really happy with her work... Thank you so much chechi... Highly recommended ❤️"
+                },
+                {
+                    name: "Megha M",
+                    stars: 5,
+                    comment: "Very professional and friendly... I'm really happy with her work... Thank you shymi chechi... Highly recommended ❤️"
+                },
+                {
+                    name: "Neethu R",
+                    stars: 5,
+                    comment: "I had a great experience with aleeza beauty parlour... really happy with my bridal makeup... tq shymi chechii... ❤️"
+                },
+                {
+                    name: "Athira K",
+                    stars: 5,
+                    comment: "Wonderful experience... Shymi chechi is very friendly... I'm really happy with her work 🥰"
+                },
+                {
+                    name: "Jilna shaju",
+                    stars: 5,
+                    comment: "I am really happy with her work... Thank you shymi chechi... Highly recommended ❤️"
+                },
+                {
+                    name: "Renjitha R",
+                    stars: 5,
+                    comment: "One of the best bridal makeup artist in Thrissur. Highly recommended..."
+                },
+                {
+                    name: "Anjitha C J",
+                    stars: 5,
+                    comment: "One of the best makeup studio in thrissur...very professional and friendly...i am really happy with her work..tq shymi chechi...❤️"
+                },
+                {
+                    name: "Sandra Babu",
+                    stars: 5,
+                    comment: "Thank you shymi chechi... I'm really happy with your work... Highly recommended ❤️"
+                },
+                {
+                    name: "Gopika Gopi",
+                    stars: 5,
+                    comment: "Thank you shymi chechi...I am really happy with her work...Highly recommended ❤️"
+                },
+                {
+                    name: "Amala Francis",
+                    stars: 5,
+                    comment: "Thank you so much Shymi chechiii...I am really happy with her work...Highly recommended ❤️"
+                }
+            ];
+
+            const reviewCardLink = document.getElementById('review-card-link');
+            const reviewCardContent = document.getElementById('review-card-content');
+            const reviewStars = document.getElementById('review-stars');
+            const reviewName = document.getElementById('review-name');
+            const reviewComment = document.getElementById('review-comment');
+            // REMOVED: allReviewsLink
+            // const allReviewsLink = document.getElementById('all-reviews-link');
+
+            // Check if all elements exist before running the script
+            if (reviewCardLink && reviewCardContent && reviewStars && reviewName && reviewComment) {
+                // Set the links
+                reviewCardLink.href = GOOGLE_REVIEWS_URL;
+                // REMOVED: allReviewsLink.href = GOOGLE_REVIEWS_URL;
+
+                let currentReviewIndex = 0;
+
+                function showNextReview() {
+                    const review = reviews[currentReviewIndex];
+                    
+                    // 1. Update Stars (Using ★ character)
+                    reviewStars.innerHTML = '★'.repeat(review.stars) + '<span class="text-gray-500" style="color: #6b7280;">' + '★'.repeat(5 - review.stars) + '</span>';
+                    
+                    // 2. Update Name
+                    reviewName.textContent = review.name;
+                    
+                    // 3. Update Comment
+                    reviewComment.textContent = `"${review.comment}"`;
+
+                    // 4. Fade In
+                    reviewCardContent.classList.remove('is-fading');
+                    
+                    // 5. Increment index for next time
+                    currentReviewIndex = (currentReviewIndex + 1) % reviews.length;
+                }
+
+                function cycleReviews() {
+                    // 1. Fade Out
+                    reviewCardContent.classList.add('is-fading');
+                    
+                    // 2. Wait for fade-out (500ms), then show next review
+                    setTimeout(showNextReview, 500);
+                }
+
+                // Load the first review immediately
+                showNextReview();
+                
+                // Start the cycle (5000ms = 5 seconds)
+                setInterval(cycleReviews, 5000);
+            }
+        });
+
+        
+        // ==================================================================
+        // --- HORIZONTAL SUPABASE AUTO-SCROLLING GALLERY SCRIPT ---
+        // ==================================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            const SUPABASE_URL = 'https://eaamxtitxrsteidkmskl.supabase.co';
+            // FIXED: Corrected the SUPABASE_ANON_KEY
+            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVhYW14dGl0eHJzdGVpZGttc2tsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5OTg1MzAsImV4cCI6MjA3ODU3NDUzMH0.p3Ee1NH1LfsPfkRg6KtxoY9azmwmqquFO0HqwswRXO8';
+
+            const galleryScroller = document.getElementById('gallery-scroller');
+            const modal = document.getElementById('gallery-modal');
+            const modalImg = document.getElementById('gallery-modal-image');
+            const closeModalBtn = document.getElementById('gallery-modal-close');
+            let _supabase;
+
+            // Check for galleryScroller first, as this script might run on courses.html
+            if (!galleryScroller) {
+                return;
+            }
+
+            try {
+                 _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            } catch (error) {
+                console.error("Error initializing Supabase client:", error);
+                if (galleryScroller) {
+                    galleryScroller.innerHTML = '<p class="text-center text-red-500 text-lg">Error initializing Supabase. Check console.</p>';
+                }
+                return;
+            }
+
+            function openModal(src) {
+                if (!galleryScroller || !modal || !modalImg) return;
+                galleryScroller.style.animationPlayState = 'paused';
+                modalImg.src = src;
+                modal.style.display = 'flex';
+            }
+
+            function closeModal() {
+                if (!galleryScroller || !modal) return;
+                modal.style.display = 'none';
+                modalImg.src = '';
+                galleryScroller.style.animationPlayState = 'running';
+            }
+
+            closeModalBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+
+            async function fetchAndBuildGallery() {
+                if (!galleryScroller || !_supabase) return;
+                galleryScroller.innerHTML = '<p class="text-center text-gold text-lg">Loading gallery...</p>';
+                try {
+                    const { data: fileList, error: listError } = await _supabase.storage.from('gallary').list();
+                    if (listError) throw listError;
+                    if (!fileList || fileList.length === 0) {
+                         galleryScroller.innerHTML = '<p class="text-center text-gold text-lg">No images found in the gallery.</p>';
+                         return;
+                    }
+
+                    galleryScroller.innerHTML = '';
+
+                    const publicUrls = fileList
+                        .filter(file => file.name.match(/\.(jpg|jpeg|png|gif|webp)$/i))
+                        .map(file => {
+                            const { data: { publicUrl } } = _supabase.storage.from('gallary').getPublicUrl(file.name);
+                            return publicUrl;
+                        });
+
+                    publicUrls.forEach(url => {
+                        const card = document.createElement('div');
+                        card.className = 'gallery-card';
+                        const img = document.createElement('img');
+                        img.src = url;
+                        img.alt = 'Gallery image';
+                        img.loading = 'lazy';
+                        img.addEventListener('click', () => openModal(url));
+                        card.appendChild(img);
+                        galleryScroller.appendChild(card);
+                    });
+                    startInfiniteScroll();
+                } catch (error) {
+                    console.error('Error fetching gallery images:', error);
+                    galleryScroller.innerHTML = `<p class="text-center text-red-500 text-lg">Error loading gallery: ${error.message}</p>`;
+                }
+            }
+
+            function startInfiniteScroll() {
+                if (!galleryScroller) return;
+                const originalItems = galleryScroller.querySelectorAll('.gallery-card');
+                if (originalItems.length === 0) return;
+
+                // Duplicate all items for a seamless loop
+                originalItems.forEach(item => {
+                    const clone = item.cloneNode(true);
+                    clone.querySelector('img').addEventListener('click', () => openModal(clone.querySelector('img').src));
+                    galleryScroller.appendChild(clone);
+                });
+                
+                const totalWidth = galleryScroller.scrollWidth / 2;
+                const pixelsPerSecond = 100; // Adjust speed here
+                const duration = totalWidth / pixelsPerSecond;
+                galleryScroller.style.animationDuration = `${duration}s`;
+                galleryScroller.classList.add('scrolling');
+            }
+            fetchAndBuildGallery();
+        });
+    </script>
+</body>
 </html>
