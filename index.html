@@ -931,6 +931,8 @@
         document.getElementById('contactForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const form = e.target;
+            const submitBtn = document.getElementById('contactSubmitBtn');
+
             const name = form.name.value.trim();
             const email = form.email.value.trim();
             const phone = form.phone.value.trim();
@@ -954,6 +956,10 @@
                 fullPhone = '+91' + fullPhone.replace(/^\+91/, '');
             }
 
+            // Disable button and show sending state
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending...';
+
             const data = { name, email, phone: fullPhone, address, service, message };
 
             try {
@@ -961,9 +967,14 @@
                 const whatsappUrl = `https://wa.me/918301969522?text=${encodeURIComponent(whatsappMessage)}`;
                 window.location.href = whatsappUrl;
                 form.reset();
+                // The page will navigate away, but this is good practice
+                submitBtn.textContent = 'Send Message';
+                submitBtn.disabled = false;
             } catch (error) {
                 console.error('Error:', error);
                 alert('An error occurred. Please try again.');
+                submitBtn.textContent = 'Send Message';
+                submitBtn.disabled = false;
             }
         });
 
