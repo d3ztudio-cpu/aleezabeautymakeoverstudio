@@ -3,24 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- UPDATED: SEO Meta Tags -->
-    <title>ALEEZA BEAUTY MAKEOVER STUDIO - Thrissur</title>
-    <meta name="description" content="Welcome to Aleeza Beauty Makeover Studio in Thrissur. Expert bridal makeup, hairstyling, facials, and professional beauty courses. Book your appointment today.">
-    <meta name="keywords" content="aleeza beauty makeover studio, beauty parlour thrissur, bridal makeup thrissur, makeup artist thrissur, shymi thomas makeup, beauty courses thrissur">
-    <link rel="canonical" href="https://aleeza-beauty-makeover-studio.web.app/index.html">
-    
-    <!-- Open Graph Tags (for social media sharing) -->
-    <meta property="og:title" content="ALEEZA BEAUTY MAKEOVER STUDIO - Thrissur">
-    <meta property="og:description" content="Expert bridal makeup, hairstyling, and professional beauty courses in Thrissur.">
-    <meta property="og:image" content="https://eaamxtitxrsteidkmskl.supabase.co/storage/v1/object/public/Images/LOGO.png">
-    <meta property="og:url" content="https://aleeza-beauty-makeover-studio.web.app/index.html">
-    <meta property="og:type" content="website">
-    <!-- End of SEO Tags -->
-
+    <title>ALEEZA BEAUTY MAKEOVER STUDIO</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     
-    <!-- Scripts --><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <!-- Scripts -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -397,12 +384,23 @@
             color: #3c0c31; /* primary */
         }
         
-        /* REMOVED: Review Button Style (it's no longer used) */
-        
+        /* NEW: Review Button Style */
+        .review-button {
+            background-color: #D4AF37; /* gold */
+            color: #3c0c31; /* primary */
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px; /* curved / pill shape */
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .review-button:hover {
+            background-color: #b8860b; /* dark-gold */
+        }
     </style>
 </head>
 <body class="bg-primary text-gold">
-    <!-- Header --><header id="header" class="fixed top-0 w-full bg-transparent backdrop-blur-md z-50 transition-all duration-300">
+    <!-- Header -->
+    <header id="header" class="fixed top-0 w-full bg-transparent backdrop-blur-md z-50 transition-all duration-300">
         <!-- UPDATED: Fixed mobile header layout -->
         <div class="w-full px-4 py-4 flex justify-between items-center"> <!-- py-4 is smaller, px-4 is smaller -->
             <a href="#home">
@@ -438,7 +436,8 @@
         <div id="overlay" class="overlay"></div>
     </header>
 
-    <!-- Hero Section --><section id="home" class="relative h-screen flex items-center justify-center text-center text-white overflow-hidden">
+    <!-- Hero Section -->
+    <section id="home" class="relative h-screen flex items-center justify-center text-center text-white overflow-hidden">
         <div class="absolute inset-0 bg-cover bg-center zoom-out" style="background-image: url('https://i.postimg.cc/hPLySwyT/bg.jpg'); background-position: center top;"></div>
         <div class="absolute inset-0 bg-black bg-opacity-40"></div>
         <div class="relative z-10 px-4"> <!-- Added px-4 for safety on small screens -->
@@ -453,7 +452,8 @@
         </div>
     </section>
     
-    <!-- UPDATED: About Section Layout --><section id="about" class="py-20 bg-primary text-white">
+    <!-- UPDATED: About Section Layout -->
+    <section id="about" class="py-20 bg-primary text-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- UPDATED: New Title Structure -->
             <div class="title-animated-container mb-12">
@@ -511,7 +511,8 @@
         </div>
     </section>
 
-    <!-- Achievements Section - MOVED --><section id="achievements" class="py-20 bg-primary text-white">
+    <!-- Achievements Section - MOVED -->
+    <section id="achievements" class="py-20 bg-primary text-white">
         <div class="container mx-auto px-4">
             <!-- UPDATED: New Title Structure -->
             <div class="title-animated-container mb-12">
@@ -548,7 +549,8 @@
         </div>
     </section>
 
-    <!-- Services Section --><section id="services" class="py-20 bg-primary">
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-primary">
         <div class="container mx-auto px-4">
             <!-- UPDATED: New Title Structure -->
             <div class="title-animated-container mb-12">
@@ -695,7 +697,8 @@
         </div>
     </section>
 
-    <!-- NEW: Reviews Section --><section id="reviews" class="py-20 bg-primary">
+    <!-- NEW: Reviews Section -->
+    <section id="reviews" class="py-20 bg-primary">
         <div class="container mx-auto px-4">
             <!-- UPDATED: New Title Structure -->
             <div class="title-animated-container mb-12">
@@ -713,12 +716,18 @@
                         <p id="review-comment" class="text-lg italic"></p>
                     </div>
                 </a>
-                <!-- REMOVED: "See all reviews" button -->
+                <div class="text-center mt-6">
+                    <!-- UPDATED: "See all reviews" link is now a styled button -->
+                    <a id="all-reviews-link" href="#" target="_blank" class="review-button btn-shine">
+                        See all reviews on Google
+                    </a>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Horizontal Gallery Section --><section id="gallery" class="py-20 bg-primary overflow-hidden">
+    <!-- Horizontal Gallery Section -->
+    <section id="gallery" class="py-20 bg-primary overflow-hidden">
         <div class="container mx-auto px-4">
             <!-- UPDATED: New Title Structure -->
             <div class="title-animated-container mb-12">
@@ -728,12 +737,14 @@
             </div>
             <div class="gallery-viewport">
                 <div class="gallery-scroller" id="gallery-scroller">
-                    <!-- Images will be dynamically injected here --></div>
+                    <!-- Images will be dynamically injected here -->
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Contact Section --><section id="contact" class="py-20 bg-primary text-white">
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-primary text-white">
         <div class="container mx-auto px-4">
             <!-- UPDATED: New Title Structure -->
             <div class="title-animated-container mb-12">
@@ -780,17 +791,23 @@
         </div>
     </section>
 
-    <!-- UPDATED: Footer with new Map Link --><footer class="bg-primary text-white py-8">
+    <!-- UPDATED: Footer with new Map Link -->
+   <footer class="bg-primary text-white py-8">
         <div class="container mx-auto px-4 text-center">
             <p class="mb-4">Aleeza Beauty Parlour, near Shoba City, Puzhakkal, Thrissur, Kerala 680553</p>
             <p class="mb-4">Phone: +91 83019 69522 | Email: aleezabeautymakeoverstudio@gmail.com</p>
             
-            <!-- Embedded Google Map -->
             <div class="w-full max-w-lg mx-auto my-6">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2008.234328329618!2d76.17658702330894!3d10.547040402094833!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba7ed95f2932aa3%3A0x2008339488034802!2sAleeza%20Beauty%20Make%20Over%20Studio!5e0!3m2!1sen!2sin!4v1731821894101!5m2!1sen!2sin" class="w-full h-64 rounded-lg border-2 border-gold" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3922.516220856425!2d76.1907!3d10.5387!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba7ef2d799d9997%3A0x672262776576!2sAleeza%20Beauty%20Makeover%20Studio!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" 
+                    class="w-full h-64 rounded-lg border-2 border-gold" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
             </div>
 
-            <!-- UPDATED: Get Directions Button link -->
             <a href="https://maps.app.goo.gl/mRZBkorbWgK4xGfo9" target="_blank" class="inline-block bg-gold text-primary px-4 py-2 rounded-lg font-semibold hover:bg-opacity-90 transition mb-4 btn-shine">Get Directions</a>
             
             <div class="mt-8 flex justify-center space-x-6">
@@ -802,15 +819,9 @@
                 </a>
                 <a href="https://mail.google.com/mail/?view=cm&fs=1&to=aleezabeautymakeoverstudio@gmail.com" target="_blank" class="text-white hover:text-gold transition" aria-label="Email">
                     <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-G
-                </a>
-            </div>
-            <p class="mt-4 text-sm">© 2025 Aleeza Beauty Makeover Studio. All rights reserved.</p>
-            <p class="mt-2 text-xs"><a href="https://www.instagram.com/_.d3z_fx._/?__pwa=1#" target="_blank" class="text-gold hover:text-white">MADE AND DEPLOYED BY D3ZTUDIO</a></p>
-        </div>
-    </footer>
 
-    <!-- Gallery Modal --><div id="gallery-modal" class="gallery-modal">
+    <!-- Gallery Modal -->
+    <div id="gallery-modal" class="gallery-modal">
         <span class="gallery-modal-close" id="gallery-modal-close">×</span>
         <img class="gallery-modal-content" id="gallery-modal-image" src="" alt="Gallery Image">
     </div>
@@ -961,7 +972,7 @@ G
         // ==================================================================
         document.addEventListener('DOMContentLoaded', () => {
             // --- UPDATED: This is the correct GOOGLE MAPS URL ---
-            const GOOGLE_REVIEWS_URL = "https://www.google.com/search?q=aleeza+beauty+makeover+stuudio&oq=a&gs_lcrp=EgZjaHJvbWUqCAgDEEUYJxg7MgYIABBFGDwyBggBEEUYOzIQCAIQLhjHARixAxjRAxiABDIICAMQRRgnGDsyBggEEEUYPDIGCAUQRRg8MgYIBhBFGDwyBggHEAUYQNIBCDIwMjRqMGo3qAIIsAIB8QXqxmVn-C9m5PEF6sZlZ_gvZuQ&sourceid=chrome&ie=UTF-8#mpd=~15800783921251745237/customers/reviews";
+            const GOOGLE_REVIEWS_URL = "https://maps.app.goo.gl/mRZBkorbWgK4xGfo9";
             
             // --- UPDATED: Now 28 hand-picked 4 & 5-star reviews ---
             const reviews = [
@@ -1112,14 +1123,13 @@ G
             const reviewStars = document.getElementById('review-stars');
             const reviewName = document.getElementById('review-name');
             const reviewComment = document.getElementById('review-comment');
-            // REMOVED: allReviewsLink
-            // const allReviewsLink = document.getElementById('all-reviews-link');
+            const allReviewsLink = document.getElementById('all-reviews-link');
 
             // Check if all elements exist before running the script
-            if (reviewCardLink && reviewCardContent && reviewStars && reviewName && reviewComment) {
+            if (reviewCardLink && reviewCardContent && reviewStars && reviewName && reviewComment && allReviewsLink) {
                 // Set the links
                 reviewCardLink.href = GOOGLE_REVIEWS_URL;
-                // REMOVED: allReviewsLink.href = GOOGLE_REVIEWS_URL;
+                allReviewsLink.href = GOOGLE_REVIEWS_URL;
 
                 let currentReviewIndex = 0;
 
@@ -1216,8 +1226,8 @@ G
                     const { data: fileList, error: listError } = await _supabase.storage.from('gallary').list();
                     if (listError) throw listError;
                     if (!fileList || fileList.length === 0) {
-                         galleryScroller.innerHTML = '<p class="text-center text-gold text-lg">No images found in the gallery.</p>';
-                         return;
+                          galleryScroller.innerHTML = '<p class="text-center text-gold text-lg">No images found in the gallery.</p>';
+                          return;
                     }
 
                     galleryScroller.innerHTML = '';
